@@ -61,7 +61,6 @@ export default function Home(){
 
   return(
     <div id="homeouterdiv">
-      <button id='signoutbutton' onClick={() => logout()}>Sign Out</button>
       <div id='homebuttondiv' className='toprightbuttons'>
         <button id='pastsearchesbutton' className='buttons' onClick={() => navigate('/pastsearches')}>Past Searches</button>
         <button id='signoutbutton' className='buttons' onClick={() => logout()}>Sign Out</button>

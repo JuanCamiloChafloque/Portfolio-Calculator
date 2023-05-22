@@ -2,6 +2,8 @@ import React, {createContext, useState} from 'react';
 import Routing from './components/global/Routing';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import {auth} from './firebase.js';
+import "./App.css";
+import { getHistoricalDataBySymbol, getAllSymbols } from "./utils/WTDApi";
 
 import './assets/css/home.css';
 import '@fontsource/gayathri/100.css';

@@ -6,6 +6,7 @@ import { HashRouter as Router, Routes, Route, useNavigate, Navigate } from "reac
 
 import Home from '../../screens/Home.jsx';
 import SignupScreen from '../../screens/SignUpScreen.jsx';
+import PastSearches from '../../screens/PastSearches.jsx';
 import LoginScreen from '../../screens/LoginScreen.jsx';
 
 export default function Routing() {

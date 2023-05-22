@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } f
 import {auth} from './firebase.js';
 import "./App.css";
 import { getHistoricalDataBySymbol, getAllSymbols } from "./utils/WTDApi";
-import { PortfolioForm } from "./components/PortfolioForm";
+import { PortfolioForm } from "./components/home/PortfolioForm";
 
 import './assets/css/home.css';
 import '@fontsource/gayathri/100.css';

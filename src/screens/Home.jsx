@@ -2,38 +2,35 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import Typed from "typed.js";
 import { AuthContext } from '../App';
 import { RingLoader } from 'react-spinners';
+import { useNavigate } from 'react-router';
 import '../assets/css/home.css';
 
 
 export default function Home(){
   const {logout} = useContext(AuthContext);
   const [questcomplete, setQuestComplete] = useState(null);
-  // Create reference to store the DOM element containing the animation
+  const navigate = useNavigate();
   const el = useRef(null);
   
-  // Create reference to store the Typed instance itself
   const typed = useRef(null);
   const {user} = useContext(AuthContext);
     
   useEffect(() => {
     const options = {
       strings: [
-        "NCP's Portfolio Calulator"
+        "NCP's Portfolio Calculator"
       ],
       typeSpeed: 45,
       backSpeed: 45,
       loop: true,
     };
 
-    // elRef refers to the <span> rendered below
     typed.current = new Typed(el.current, options);
     
     return () => {
-      // Make sure to destroy Typed instance during cleanup to prevent memory leaks
       typed.current.destroy();
     }
   }, [])
-
   useEffect(() => {
     if (questcomplete) {
       getQuestData();
@@ -65,6 +62,10 @@ export default function Home(){
   return(
     <div id="homeouterdiv">
       <button id='signoutbutton' onClick={() => logout()}>Sign Out</button>
+      <div id='homebuttondiv' className='toprightbuttons'>
+        <button id='pastsearchesbutton' className='buttons' onClick={() => navigate('/pastsearches')}>Past Searches</button>
+        <button id='signoutbutton' className='buttons' onClick={() => logout()}>Sign Out</button>
+      </div>
       <div id='outertyped'>
         <span id='typedvote' className='blinkingorange' ref={el} />
       </div>

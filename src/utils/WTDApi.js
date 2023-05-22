@@ -3,14 +3,19 @@ import axios from "axios";
 const API_KEY = "125361109e35d14cf042655f2f5785c0";
 const BASE_URL = "http://api.marketstack.com/v1/";
 
-export const getHistoricalDataBySymbol = async (startDate, symbol, amount) => {
-  const strStartDate = startDate;
-  const strToday = new Date().toISOString().substring(0, 10);
+export const getHistoricalDataBySymbol = async (
+  startDate,
+  symbol,
+  amount,
+  limit = 1000,
+  offset = 0
+) => {
+  const today = new Date().toISOString().substring(0, 10);
   let totalAmount = 0.0;
 
   const { data } = await axios.get(
     BASE_URL +
-      `eod?access_key=${API_KEY}&symbols=${symbol}&date_from=${strStartDate}&date_to=${strToday}`
+      `eod?access_key=${API_KEY}&symbols=${symbol}&date_from=${startDate}&date_to=${today}&limit=${limit}&offset=${offset}`
   );
 
   const res = data.data.reverse().map((ex) => {

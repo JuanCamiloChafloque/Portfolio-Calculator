@@ -11,12 +11,13 @@
   },
   "dependencies": {
     "@fontsource/gayathri": "^5.0.0",
-    "firebase": "^9.22.0",
     "axios": "^1.4.0",
+    "firebase": "^9.22.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
     "react-spinners": "^0.13.8",
+    "recharts": "^2.6.2",
     "typed.js": "^2.0.16"
   },
   "devDependencies": {

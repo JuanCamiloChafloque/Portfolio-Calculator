@@ -20,7 +20,7 @@
   99%{    color:transparent;  }
   100%{   color: rgb(255, 139, 0)}
 }
-#questouterdiv::before {
+#questouterdiv::before, #pastsearchesdiv::before {
   content: "";
   position: absolute;
   top: 0;

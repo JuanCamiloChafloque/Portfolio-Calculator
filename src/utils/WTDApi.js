@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "YRS7K3XG23PGSVX5";
+const API_KEY = "1Y5BJF31I3GJFLYB";
 const BASE_URL = "https://www.alphavantage.co/query?apikey=" + API_KEY;
 
 export const getHistoricalDataBySymbol = async (startDate, symbol, amount) => {

@@ -1,3 +1,4 @@
+// 100 objects here
 export const symbols = [
   {
     name: "Microsoft Corporation",

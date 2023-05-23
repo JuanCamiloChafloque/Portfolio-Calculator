@@ -1,3 +1,4 @@
+// 100 objects in this arr
 export const goog = [
   {
     open: 124.2,

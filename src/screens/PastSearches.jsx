@@ -1,10 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../App.jsx';
 import { useNavigate } from 'react-router';
+import { db } from '../firebase.js';
+import { addDoc, doc, collection, getDocs } from '@firebase/firestore';
 
 export default function PastSearches() {
-    const { logout } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [foundpast, setFoundPast] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log("fetching data")
+            const querySnapshot = await getDocs(collection(db, 'data', user.uid, 'searches'));
+            console.log("querySnapshot is: ", querySnapshot);
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, " => ", doc.data());
+                setFoundPast((lastobj) => [...lastobj, doc.data()]);
+            });
+            return querySnapshot;
+        }
+
+        fetchData();
+    }, [])
+
+    useEffect(() => {
+        console.log("foundpast is: ", foundpast);
+        console.log("foundpast is: ", typeof foundpast);
+    }, [foundpast])
+
     return (
         <div>
             <div id="homebuttondiv" className="toprightbuttons">

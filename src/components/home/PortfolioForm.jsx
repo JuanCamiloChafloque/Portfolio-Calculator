@@ -8,9 +8,9 @@ export const PortfolioForm = () => {
   const {user} = useContext(AuthContext);
   useEffect(() => {
     (async function () {
-      const parentDocRef = doc(db, 'data', user.uid);
-      const questCollectionRef = collection(parentDocRef, 'searches');
-      await addDoc(questCollectionRef, {...queryresults, timestamp: serverTimestamp()});
+      // const parentDocRef = doc(db, 'data', user.uid);
+      // const questCollectionRef = collection(parentDocRef, 'searches');
+      // await addDoc(questCollectionRef, {...queryresults, timestamp: serverTimestamp()});
     })()
   }, [])
   return (

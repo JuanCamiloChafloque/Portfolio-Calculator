@@ -1,42 +1,44 @@
 import axios from "axios";
 
-const API_KEY = "125361109e35d14cf042655f2f5785c0";
-const BASE_URL = "http://api.marketstack.com/v1/";
+const API_KEY = "YRS7K3XG23PGSVX5";
+const BASE_URL = "https://www.alphavantage.co/query?apikey=" + API_KEY;
 
-export const getHistoricalDataBySymbol = async (
-  startDate,
-  symbol,
-  amount,
-  limit = 1000,
-  offset = 0
-) => {
+export const getHistoricalDataBySymbol = async (startDate, symbol, amount) => {
   const today = new Date().toISOString().substring(0, 10);
   let totalAmount = 0.0;
 
   const { data } = await axios.get(
     BASE_URL +
-      `eod?access_key=${API_KEY}&symbols=${symbol}&date_from=${startDate}&date_to=${today}&limit=${limit}&offset=${offset}`
+      `&function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol=${symbol}`
   );
 
-  const res = data.data.reverse().map((ex) => {
-    totalAmount += amount * ex.close;
+  const filteredData = Object.entries(data["Time Series (Daily)"]).filter(
+    ([key, _]) => key >= startDate && key <= today
+  );
+
+  const res = filteredData.reverse().map((entry) => {
+    totalAmount += amount * entry[1]["4. close"];
     return {
-      date: ex.date.substring(0, 10),
-      symbol: ex.symbol,
-      close: ex.close,
+      date: entry[0],
+      symbol: symbol,
+      close: entry[1]["4. close"],
+      adjusted_close: entry[1]["5. adjusted close"],
     };
   });
 
   return { res, totalAmount };
 };
 
-export const getAllSymbols = async () => {
-  const { data } = await axios.get(BASE_URL + `tickers?access_key=${API_KEY}`);
+// *Keyword: The keyword is the name of the symbol that the user is currently typing in the autocomplete dropdown selector.
+export const getAllSymbols = async (keyword) => {
+  const { data } = await axios.get(
+    BASE_URL + `&function=SYMBOL_SEARCH&keywords=${keyword}`
+  );
   console.log(data);
-  const res = data.data.map((symbol) => {
+  const res = data["bestMatches"].map((s) => {
     return {
-      name: symbol.name,
-      symbol: symbol.symbol,
+      name: s["2. name"],
+      symbol: s["1. symbol"],
     };
   });
 

@@ -70,9 +70,9 @@ export default function Home(){
         <span id='typedvote' className='blinkingorange' ref={el} />
       </div>
       <PortfolioForm />
-      <div id='questouterdiv' className='absolute flex flex-col items-center justify-center top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2'>
+      {/* <div id='questouterdiv' className='absolute flex flex-col items-center justify-center top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2'>
         <RingLoader color='#FFA500' loading={true} size={150} />
-      </div>
+      </div> */}
     </div> 
   )
 }

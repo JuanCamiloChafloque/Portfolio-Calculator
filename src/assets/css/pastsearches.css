@@ -11,9 +11,6 @@
 #pastsearchesdiv {
     margin-top: 15vh;
 }
-#pastsearchesdiv *, #addstocks {
-    text-shadow: 10px 10px 15px #111111;
-}
 #pastsearchesdiv > div {
     background-color: #f4efe8;
     border-radius: 8px;

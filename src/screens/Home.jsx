@@ -48,7 +48,7 @@ export default function Home(){
       const userUid = user.uid;
       const parentDocRef = doc(db, 'data', userUid);
       const questCollectionRef = collection(parentDocRef, 'searches');
-      await addDoc(questCollectionRef, {...questcomplete, timestamp: serverTimestamp()});
+      await addDoc(questCollectionRef, {...formdata, timestamp: serverTimestamp()});
     }
 
   }, [formdata])
@@ -71,7 +71,7 @@ export default function Home(){
           }
         </div>
       :
-        <PortfolioForm datastate={setFormData} />
+        <PortfolioForm setFormData={setFormData} />
       }
     </div> 
   )

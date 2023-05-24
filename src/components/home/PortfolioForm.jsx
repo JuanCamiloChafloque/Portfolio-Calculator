@@ -7,7 +7,7 @@ import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import '../../assets/css/portfolioform.css';
 
-export const PortfolioForm = ({ datastate }) => {
+export const PortfolioForm = ({ setFormData }) => {
   const [queryresults, setQueryResults] = useState(null);
   const {user} = useContext(AuthContext);
   const [addStock, setAddstock]=useState(true)
@@ -22,15 +22,20 @@ export const PortfolioForm = ({ datastate }) => {
     allocation: []
   });
 
+  // Form Inputs
+  const [intialAmount,setInitialAmount] = useState("")
+  const [pastDate,setPastDate]=useState("")
+  const [allocatedValues,setAllocatedValues] = useState({})
+
   // looks for suggested stock options
-  const handleTicker = async(event)=>{
+  const handleTicker = async(event) => {
     const value = event.target.value
     setInputValue(value);
 
     const data = await getAllSymbols(value)
     setSuggestedValues(data)
-    
   }
+
   // toggle add more stocks input
   const addStockButton=()=>{
     setAddstock(!addStock)
@@ -46,20 +51,37 @@ export const PortfolioForm = ({ datastate }) => {
   };
 
   const CustomStartInput = forwardRef(({ value, onClick }, ref) => (
-    <button id="datepick" className='buttons' onClick={onClick} ref={ref}>
+    <button type='button' id="datepick" className='buttons' onClick={onClick} ref={ref}>
       {value ? value : 'Select a start date'}
     </button>
   ));
 
   const CustomFinishInput = forwardRef(({ value, onClick }, ref) => (
-    <button id="datepick" className='buttons' onClick={onClick} ref={ref}>
+    <button type='button' id="datepick" className='buttons' onClick={onClick} ref={ref}>
       {value ? value : 'Select a finish date'}
     </button>
   ));
 
+  const handleAllocatedValue = async(event, stock) => {
+    setAllocatedValues((prev)=>({ ...prev, [stock]: event }))
+  }
+
+  const submitfunc = (e) => {
+    e.preventDefault()
+    const sumValues = dataobj.allocation.reduce((a, b) => parseInt(a) + parseInt(b.weight), 0);
+
+    if(sumValues === 100) {
+      console.log("dataobj:", dataobj)
+      setFormData(dataobj)
+      console.log("success")
+    } else {
+      alert("Allocation is missing")
+    }
+  }
+
   return (
-    <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2'> 
-      <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} onChange={(event) => setDataobj({...dataobj, balance: event.target.value})} />
+    <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
+      <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} onChange={(event) => setDataobj({...dataobj, balance: parseInt(event.target.value)})} />
       <div className=' text-md flex justify-between w-80 items-center p-2'>
         <span id="addstocks">Add stocks</span>
         <span onClick={addStockButton} id='plusbutton'>
@@ -123,8 +145,7 @@ export const PortfolioForm = ({ datastate }) => {
         showYearDropdown
         dropdownMode="select"
       />
-      <button className='buttons text-black' onClick={() => {}}>Check History</button>
+      <input type='submit' value="Check History" className='buttons text-white' />
     </form>
   )
 }
-

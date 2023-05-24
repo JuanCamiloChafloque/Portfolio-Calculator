@@ -22,23 +22,6 @@
     font-size: 28px;
     font-weight: 500;
 }
-.buttons {
-    margin-top: 1rem;
-    font-size: 18px;
-    font-weight: 500;
-    padding-top: 0.75rem !important;
-    padding-bottom: 0.375rem;
-    padding-inline: 1rem;
-    border-radius: 25px;
-    transition: all 0.4s ease-in-out;
-    color: black;
-    background: linear-gradient(to right, #38f0f0, #3017cd);
-    border: none;
-    cursor: pointer;
-}
-.buttons:hover {
-    background: linear-gradient(to right, red, white) !important;
-}
 .authdiv input {
     margin-top: 1rem;
     padding-inline: 1rem;

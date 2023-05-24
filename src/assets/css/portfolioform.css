@@ -17,3 +17,26 @@
     font-size: 1.25rem !important;
     border-radius: 4px !important;
 }
+#datepick {
+    background: linear-gradient(to right, orange, #3017cd) !important;
+    color: white !important;
+}
+#addstocks {
+    font-weight: 700;
+    color: white !important;
+}
+.react-datepicker-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    width: auto !important;
+}
+.react-datepicker__input-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+select {
+    background-color: sandybrown;
+}

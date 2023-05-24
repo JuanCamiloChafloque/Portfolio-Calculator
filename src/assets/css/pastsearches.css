@@ -11,7 +11,7 @@
 #pastsearchesdiv {
     margin-top: 15vh;
 }
-#pastsearchesdiv * {
+#pastsearchesdiv *, #addstocks {
     text-shadow: 10px 10px 15px #111111;
 }
 #pastsearchesdiv > div {

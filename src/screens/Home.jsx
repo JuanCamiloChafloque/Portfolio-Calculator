@@ -4,17 +4,21 @@ import { AuthContext } from '../App';
 import { RingLoader } from 'react-spinners';
 import { useNavigate } from 'react-router';
 import { PortfolioForm } from '../components/home/PortfolioForm';
+import Results from '../components/home/Results.jsx';
+import { db } from '../firebase';
+import { addDoc, collection, doc, serverTimestamp } from '@firebase/firestore';
 import '../assets/css/home.css';
 
 
 export default function Home(){
-  const {logout} = useContext(AuthContext);
-  const [questcomplete, setQuestComplete] = useState(null);
+  const [formcomplete, setFormComplete] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [formdata, setFormData] = useState({});
+
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const el = useRef(null);
-  
   const typed = useRef(null);
-  const {user} = useContext(AuthContext);
     
   useEffect(() => {
     const options = {
@@ -32,33 +36,22 @@ export default function Home(){
       typed.current.destroy();
     }
   }, [])
+
   useEffect(() => {
-    if (questcomplete) {
-      getQuestData();
+    // if not an empty object, set formcomplete to true
+    if (Object.keys(formdata).length !== 0) {
+      makeDoc();
+      setFormComplete(true);
     }
 
-    async function getQuestData() {
-      // uncomment if sending dat over to firestore
-
-      // const userUid = user.uid;
-      // const parentDocRef = doc(db, 'data', userUid);
-      // const questCollectionRef = collection(parentDocRef, 'quest');
-      // await addDoc(questCollectionRef, {...questcomplete, timestamp: serverTimestamp()});
-
-      fetch(`http://127.0.0.1:8000/...`)
-        .then(response => response.json())
-        .then(myList => {
-          console.log("data is: ", JSON.parse(myList));
-          const jsoncall = JSON.parse(myList);
-          console.log("typeof myList.plan is: ", typeof jsoncall.plan);
-          console.log("myList.plan is: ", jsoncall.plan);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    async function makeDoc() {
+      const userUid = user.uid;
+      const parentDocRef = doc(db, 'data', userUid);
+      const questCollectionRef = collection(parentDocRef, 'searches');
+      await addDoc(questCollectionRef, {...questcomplete, timestamp: serverTimestamp()});
     }
 
-  }, [questcomplete])
+  }, [formdata])
 
   return(
     <div id="homeouterdiv">
@@ -69,10 +62,17 @@ export default function Home(){
       <div id='outertyped'>
         <span id='typedvote' className='blinkingorange' ref={el} />
       </div>
-      <PortfolioForm />
-      {/* <div id='questouterdiv' className='absolute flex flex-col items-center justify-center top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2'>
-        <RingLoader color='#FFA500' loading={true} size={150} />
-      </div> */}
+      {formcomplete ?
+        <div id='questouterdiv' className='absolute flex flex-col items-center justify-center top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2'>
+          {loading ?
+            <RingLoader color='#FFA500' loading={true} size={150} />
+          :
+            <Results />
+          }
+        </div>
+      :
+        <PortfolioForm datastate={setFormData} />
+      }
     </div> 
   )
 }

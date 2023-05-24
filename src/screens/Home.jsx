@@ -15,7 +15,7 @@ export default function Home(){
   
   const typed = useRef(null);
   const {user} = useContext(AuthContext);
-    
+  const [formData,setFormData]=useState({})  
   useEffect(() => {
     const options = {
       strings: [
@@ -69,7 +69,8 @@ export default function Home(){
       <div id='outertyped'>
         <span id='typedvote' className='blinkingorange' ref={el} />
       </div>
-      <PortfolioForm />
+      <PortfolioForm setFormData={setFormData} />
+      {console.log(formData)}
       {/* <div id='questouterdiv' className='absolute flex flex-col items-center justify-center top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2'>
         <RingLoader color='#FFA500' loading={true} size={150} />
       </div> */}

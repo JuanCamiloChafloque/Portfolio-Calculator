@@ -3,14 +3,21 @@ import { addDoc, doc, collection, serverTimestamp } from '@firebase/firestore';
 import { db } from '../../firebase.js';
 import { AuthContext } from '../../App.jsx';
 import {getAllSymbols} from '/src/utils/WTDApi.js'
-export const PortfolioForm = () => {
+export const PortfolioForm = ({setFormData}) => {
   const [queryresults, setQueryResults] = useState(null);
   const {user} = useContext(AuthContext);
   const [addStock, setAddstock]=useState(true)
   const [inputValue, setInputValue] = useState('');
   const [suggestedValues, setSuggestedValues] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  
+  // dummy data to test
+  const [selectedOptions, setSelectedOptions] = useState(["googl","meta"]);
+
+// Form Inputs
+const [intialAmount,setInitialAmount] = useState("")
+const [pastDate,setPastDate]=useState("")
+const [allocatedValues,setAllocatedValues] = useState({})
+
+
   useEffect(() => {
     (async function () {
       const parentDocRef = doc(db, 'data', user.uid);
@@ -40,25 +47,65 @@ const handleOptionToggle = (option) => {
   } else {
     setSelectedOptions([...selectedOptions, option]);
   }
-};
+}
+
+const handleAllocatedValue = async(event,stock)=>{
+  const value = event
+
+setAllocatedValues((prev)=>({
+  ...prev,
+  [stock]:value
+
+} ))
+ 
+}
+
+
+
+
+const onSubmit=(e)=>{
+e.preventDefault()
+const sumValues = obj => Object.values(obj). reduce((a, b) => parseInt(a) + parseInt(b), 0);
+const totalPercentage = sumValues(allocatedValues)
+
+if(totalPercentage==100){
+ const formData = {
+  intialAmount:intialAmount,
+  pastDate:pastDate,
+  allocatedValues:allocatedValues
+ }
+setFormData(formData)
+ console.log("success")
+}else{
+  alert("Allocation is missing")
+
+}
+
+}
 
   return (
-    <form className='flex items-center mx-auto flex-col w-max-2 justify-start bg-slate-50 rounded-lg p-2'> 
-    
-      <input className='mb-3' type="number" name="" id="" />
-<div className='text-slate-900 text-md flex justify-between w-80 items-center p-2'>
+    <form className='flex items-center mx-auto flex-col w-max-2 justify-start bg-slate-50 rounded-lg p-2' onSubmit={onSubmit}> 
+    {/* Enter initial amount */}
+      <input required className='mb-3' type="number" name="number" value={intialAmount} onChange={(e)=>setInitialAmount(e.target.value)} />
+{/* Enter past date */}
+
+<input type="date" value={pastDate} onChange={(e)=>setPastDate(e.target.value)}/>
+
+{/* add stocks */}
+        <div className='text-slate-900 text-md flex justify-between w-80 items-center p-2'>
   <span>Add stocks</span>
   <span  onClick={addStockButton}>
-
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-9 h-9">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-9 h-9">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 </svg>
+
+
 
 </span>
 </div>
 
-
-<ul>
+{/* display selected stocks */}
+<ul id="selected-stocks" >
   {selectedOptions.map((stock)=> 
       <li className='flex justify-between font-medium  items-center max-h-96 w-80' key={stock} > 
                <input
@@ -69,7 +116,7 @@ const handleOptionToggle = (option) => {
                 htmlFor={stock}
                 /> 
               <label htmlFor={stock} className='text-slate-900 '>{stock}</label>  
-              <input type="number" className="w-10 h-7 text-base" htmlFor={stock} max='100'  />
+              <input type="number" className="w-10 h-9 text-base" value={allocatedValues[stock]} onChange={(e)=>handleAllocatedValue(e.target.value,stock)} name={stock} htmlFor={stock} max='100'  />
                </li> )}
 </ul>
 
@@ -100,6 +147,7 @@ const handleOptionToggle = (option) => {
         
         ):null}
       </ul>
+      <input type="submit" value="submit" className='buttons' />
     </form>
   )
 }

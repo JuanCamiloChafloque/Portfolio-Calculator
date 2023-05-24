@@ -1,13 +1,8 @@
 import React, { createContext, useState } from "react";
 import Routing from "./components/global/Routing";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "./firebase.js";
 import "./App.css";
-import { PortfolioForm } from "./components/home/PortfolioForm";
 
 import "./assets/css/home.css";
 import "@fontsource/gayathri/100.css";
@@ -78,7 +73,7 @@ export default function App() {
               return false;
             });
         },
-        register: async (email, password, someobj) => {
+        register: async (email, password) => {
           await createUserWithEmailAndPassword(auth, email, password)
             .then(async () => {
               console.log("Account created & signed in!");

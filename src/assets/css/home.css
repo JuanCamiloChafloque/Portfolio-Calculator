@@ -2,7 +2,6 @@
   font-size:  2rem;
   color: white;
   text-align: center;
-  min-height: 99vh;
 }
 #outertyped {
   margin-top: 5vh;
@@ -11,6 +10,7 @@
   align-items: center;
   justify-content: center;
   color: #f4efe8 !important;
+  font-size: 3rem;
 }
 
 @keyframes blinkingOrange{

@@ -1,32 +1,15 @@
 import axios from "axios";
 
-const API_KEY = "1Y5BJF31I3GJFLYB";
+const API_KEY = "SV2RAVRTE4ZMY20U";
 const BASE_URL = "https://www.alphavantage.co/query?apikey=" + API_KEY;
 
-export const getHistoricalDataBySymbol = async (startDate, symbol, amount) => {
-  const today = new Date().toISOString().substring(0, 10);
+export const getHistoricalDataBySymbol = async (symbol) => {
   const { data } = await axios.get(
     BASE_URL +
       `&function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol=${symbol}`
   );
 
-  const filteredData = Object.entries(data["Time Series (Daily)"])
-    .filter(([key, _]) => key >= startDate && key <= today)
-    .reverse();
-
-  const numShares = amount / filteredData[0][1]["4. close"];
-
-  const result = filteredData.shift().map((entry) => {
-    return {
-      date: entry[0],
-      symbol: symbol,
-      close: entry[1]["4. close"],
-      adjusted_close: entry[1]["5. adjusted close"],
-      value_investment: numShares * entry[1]["4. close"],
-    };
-  });
-
-  return result;
+  return data;
 };
 
 // *Keyword: The keyword is the name of the symbol that the user is currently typing in the autocomplete dropdown selector.

@@ -22,11 +22,6 @@ export const PortfolioForm = ({ setFormData }) => {
     allocation: []
   });
 
-  // Form Inputs
-  const [intialAmount,setInitialAmount] = useState("")
-  const [pastDate,setPastDate]=useState("")
-  const [allocatedValues,setAllocatedValues] = useState({})
-
   // looks for suggested stock options
   const handleTicker = async(event) => {
     const value = event.target.value
@@ -62,17 +57,13 @@ export const PortfolioForm = ({ setFormData }) => {
     </button>
   ));
 
-  const handleAllocatedValue = async(event, stock) => {
-    setAllocatedValues((prev)=>({ ...prev, [stock]: event }))
-  }
-
   const submitfunc = (e) => {
     e.preventDefault()
     const sumValues = dataobj.allocation.reduce((a, b) => parseInt(a) + parseInt(b.weight), 0);
 
     if(sumValues === 100) {
       console.log("dataobj:", dataobj)
-      setFormData(dataobj)
+      setFormData({...dataobj, start: new Date(dataobj.start).toISOString().substring(0, 10), finish: new Date(dataobj.finish).toISOString().substring(0, 10)})
       console.log("success")
     } else {
       alert("Allocation is missing")
@@ -99,7 +90,7 @@ export const PortfolioForm = ({ setFormData }) => {
             <label htmlFor={stock} className=' '>{stock}</label>  
             <input type="number" className="percents w-10 h-7 text-base" htmlFor={stock} max='100' min='0' placeholder='0' onChange={(event) => {
               const newAllocation = dataobj.allocation.filter((item) => item.symbol !== stock);
-              setDataobj({...dataobj, allocation: [...newAllocation, {symbol: stock, weight: event.target.value}]});
+              setDataobj({...dataobj, allocation: [...newAllocation, {symbol: stock, weight: parseFloat(event.target.value)}]});
             }} />
           </li>
         )}

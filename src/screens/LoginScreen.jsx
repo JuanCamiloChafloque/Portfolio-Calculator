@@ -16,20 +16,25 @@ export default function LoginScreen() {
     <div className='authdiv'>
       <p className='authtitle text-[5rem]'>NCP's Portfolio Calculator</p>
       <p id='createacc' className='text-white'>Login</p>
-      <form id='loginform' className='authform'>
+      <div id='loginform' className='authform'>
         <input
-          onChange={(userEmail) => setEmail(userEmail)}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           type="email-address"
           autoCapitalize="none"
         />
         <input
           type='password'
-          onChange={(userPassword) => setPassword(userPassword)}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
-        <button className='buttons' onClick={() => login(email, password)}>Sign In</button>
-      </form>
+        <button className='buttons' onClick={(e) => {
+          e.preventDefault();
+          login(email, password)
+        }}>
+            Sign In
+        </button>
+      </div>
 
       <button className='buttons' onClick={
         async() => await sendPasswordResetEmail(auth, email)

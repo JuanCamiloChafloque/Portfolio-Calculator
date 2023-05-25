@@ -8,11 +8,13 @@ import Results from "../components/home/Results.jsx";
 import { db } from "../firebase";
 import { addDoc, collection, doc, serverTimestamp } from "@firebase/firestore";
 import "../assets/css/home.css";
+import { getHistoricalDataBySymbol } from "../utils/WTDApi";
 
 export default function Home() {
   const [formcomplete, setFormComplete] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [formdata, setFormData] = useState({});
+  const [filteredRange, setFilteredRange] = useState(null);
 
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -52,6 +54,72 @@ export default function Home() {
     }
   }, [formdata]);
 
+  useEffect(() => {
+    if (formcomplete) {
+      const startDate = new Date(formdata.start);
+      const endDate = new Date(formdata.finish);
+      let dataResults = {};
+
+      const processData = async () => {
+        await Promise.all(
+          formdata.allocation.map(async (alloc, index) => {
+            const allocBalance = formdata.balance * (alloc.weight / 100);
+            const data = await getHistoricalDataBySymbol(alloc.symbol);
+            // if data holds a key titled "Note", then there was an error, and alert to user "API is exhausted, please try again in a minute"
+            if (data["Note"]) {
+              alert("API is exhausted, please try again in a minute.");
+              return;
+            }
+
+            const filteredData = Object.entries(data).filter(([key, _]) => {
+              const keyasdate = new Date(key);
+              return keyasdate >= startDate && keyasdate <= endDate;
+            }).reverse();
+
+            // each entry in filteredData is a new date
+            const result = filteredData.map((newdate) => {
+              // have shares that they'd have on this new date
+              const closeondate = parseFloat(newdate[1]["4. close"]);
+              const numShares = allocBalance / closeondate;
+              return {
+                date: newdate[0],
+                shares: numShares,
+                close: closeondate,
+                adjusted_close: parseFloat(newdate[1]["5. adjusted close"]),
+                value_investment: numShares * closeondate,
+              };
+            });
+
+            if (result) {
+              if (!dataResults[alloc.symbol]) {
+                dataResults[alloc.symbol] = {
+                  initialBalance: parseFloat(allocBalance.toFixed(2)),
+                  initialDate: startDate,
+                  data: result,
+                };
+              }
+            } else {
+              alert("Something went wrong! Try again.");
+            }
+          })
+        );
+        return dataResults;
+      };
+      
+      processData().then((result) => {
+        if (result) {
+          setFilteredRange(result);
+        }
+      });
+    }
+  }, [formcomplete]);
+
+  useEffect(() => {
+    if (filteredRange) {
+      setLoading(false);
+    }
+  }, [filteredRange]);
+
   return (
     <div id="homeouterdiv">
       <div id="homebuttondiv" className="toprightbuttons">
@@ -77,7 +145,7 @@ export default function Home() {
           {loading ? (
             <RingLoader color="#FFA500" loading={true} size={150} />
           ) : (
-            <Results formData={formdata} />
+            <Results formData={filteredRange} />
           )}
         </div>
       ) : (

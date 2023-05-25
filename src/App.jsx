@@ -68,6 +68,20 @@ export default function App() {
                       console.log("This user is currently disabled."),
                   },
                 ]);
+              } else if (error.code === "auth/missing-email") {
+                alert("Please enter an email address.", "", [
+                  {
+                    text: "OK",
+                    onClick: () => console.log("Please enter an email address."),
+                  },
+                ]);
+              } else if (error.code === "auth/missing-password") {
+                alert("Please enter a password.", "", [
+                  {
+                    text: "OK",
+                    onClick: () => console.log("Please enter a password."),
+                  },
+                ]);
               }
               console.error(error);
               return false;

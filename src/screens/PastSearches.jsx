@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { db } from '../firebase.js';
 import { addDoc, doc, collection, getDocs, serverTimestamp } from '@firebase/firestore';
 import '../assets/css/pastsearches.css';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import tinycolor from 'tinycolor2';
 
 export default function PastSearches() {
@@ -14,12 +14,26 @@ export default function PastSearches() {
 
     useEffect(() => {
         const fetchData = async () => {
-            // await addDoc(collection(doc(db, 'data', user.uid), 'searches'), { start: "2013-03-20", finish: "2023-05-23", balance: 32500, allocation: [{ symbol: 'AAPL', weight: 20}, { symbol: 'GOOG', weight: 50 }, { symbol: 'MSFT', weight: 30 }], timestamp: serverTimestamp() });
+            // gets all the documents in the searches collection for the current user
             const querySnapshot = await getDocs(collection(db, 'data', user.uid, 'searches'));
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, " => ", doc.data());
-                setFoundPast((lastobj) => lastobj.some((item) => item.finish === doc.data().finish && item.start === doc.data().start && item.symbol === doc.data().symbol) ? [...lastobj] : [...lastobj, doc.data()])
-            });
+
+            // maps the data from each document into an array
+            const newData = querySnapshot.docs.map((doc) => doc.data());
+
+            // filters out any duplicates
+            setFoundPast((prevState) => {
+                const uniqueData = newData.filter((obj) => {
+                    return !prevState.some((prevObj) =>
+                        prevObj.start === obj.start &&
+                        prevObj.finish === obj.finish &&
+                        prevObj.balance === obj.balance &&
+
+                        // allocation is an array of objects, so we need to stringify it to compare
+                        JSON.stringify(prevObj.allocation) === JSON.stringify(obj.allocation)
+                    );
+                })
+                return [...prevState, ...uniqueData];
+            })
             return querySnapshot;
         }
 
@@ -32,9 +46,6 @@ export default function PastSearches() {
 
     // math stuff for pie chart
     const RADIAN = Math.PI / 180;
-    const lineHeight = 14; // Adjust the line height as needed
-    const spaceBetween = 8;
-
 
     return (
         <div>

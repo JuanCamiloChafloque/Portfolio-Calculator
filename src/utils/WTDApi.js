@@ -9,7 +9,15 @@ export const getHistoricalDataBySymbol = async (symbol) => {
       `&function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol=${symbol}`
   );
 
-  return data;
+  console.log("data is:", data);
+  
+  // if data is an object, return that object, if else return an empty object
+  // if the object has a key named "Time Series (Daily)", return that object, if else return an empty object
+  if (data.hasOwnProperty("Time Series (Daily)")) {
+    return data["Time Series (Daily)"];
+  } else {
+    return data;
+  }
 };
 
 // *Keyword: The keyword is the name of the symbol that the user is currently typing in the autocomplete dropdown selector.

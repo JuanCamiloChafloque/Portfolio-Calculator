@@ -124,9 +124,7 @@ export default function Home() {
         <button id="pastsearchesbutton" className="buttons" onClick={() => navigate("/pastsearches")}>
           Past Searches
         </button>
-        <button id="resultsbutton" className="buttons" onClick={() => navigate("/results")}>
-          Results
-        </button>
+  
         <button id="signoutbutton" className="buttons" onClick={() => logout()}>
           Sign Out
         </button>

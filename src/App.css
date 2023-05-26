@@ -18,6 +18,13 @@
     filter: drop-shadow(0 0 2em #61dafbaa);
   }
 
+  .gradientText{
+   font-weight: 800;
+  background: -webkit-linear-gradient(180deg,#00d2ff, #3a47d5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  }
+
 .buttons {
   margin-top: 1rem;
   font-size: 18px;
@@ -34,9 +41,9 @@
   font-family: 'Gayathri', sans-serif;
 }
 .buttons:hover {
-  background: linear-gradient(to right, red, white) !important;
+  background: linear-gradient(to right, red, orange) !important;
 }
-#pastsearchesdiv *, #addstocks, label {
+#pastsearchesdiv > p {
   text-shadow: 10px 10px 15px #111111;
 }
   @keyframes logo-spin {

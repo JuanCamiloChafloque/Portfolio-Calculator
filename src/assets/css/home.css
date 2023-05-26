@@ -29,10 +29,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(90deg, #38f0f0 50%, #3017cd);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  filter: blur(64px) blur(64px);
+ 
+
+ 
+
   z-index: -1; /* Ensure the pseudo-element stays behind the content */
 }
 #questouterdiv > span > :first-child {

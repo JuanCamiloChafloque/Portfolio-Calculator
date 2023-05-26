@@ -26,6 +26,7 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+  background: linear-gradient(360deg, #00d2ff 0%, #3a47d5 100%);
 }
 
 h1 {

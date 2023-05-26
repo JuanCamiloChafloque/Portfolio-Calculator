@@ -18,6 +18,13 @@
     filter: drop-shadow(0 0 2em #61dafbaa);
   }
 
+  .gradientText{
+   font-weight: 800;
+  background: -webkit-linear-gradient(180deg,#00d2ff, #3a47d5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  }
+
 .buttons {
   margin-top: 1rem;
   font-size: 18px;
@@ -25,18 +32,18 @@
   padding-top: 0.75rem !important;
   padding-bottom: 0.375rem;
   padding-inline: 1rem;
-  border-radius: 25px !important;
+  border-radius: 10px !important;
   transition: all 0.4s ease-in-out;
-  color: black;
+  color: white;
   background: linear-gradient(to right, #1CB5E0 0%, #000851 100%) !important;
   border: none;
   cursor: pointer;
   font-family: 'Gayathri', sans-serif;
 }
 .buttons:hover {
-  background: linear-gradient(to right, red, white) !important;
+  background: linear-gradient(to right, red, orange) !important;
 }
-#pastsearchesdiv *, #addstocks, label {
+#pastsearchesdiv > p {
   text-shadow: 10px 10px 15px #111111;
 }
   @keyframes logo-spin {

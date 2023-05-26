@@ -101,8 +101,8 @@ export default function Home() {
                       result[0].close,
                   };
                 }
-                console.log("DATA:", dataResults);
-                return dataResults;
+                // console.log("DATA:", dataResults);
+                // return dataResults;
               } else {
                 toast.error("Something went wrong! Try again.", {
                   position: toast.POSITION.TOP_CENTER,
@@ -112,6 +112,7 @@ export default function Home() {
             }
           })
         );
+        return dataResults;
       };
 
       processData().then((result) => {

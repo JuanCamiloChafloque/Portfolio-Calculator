@@ -9,11 +9,10 @@ import { toast } from "react-toastify";
 import { addDoc, doc, collection, serverTimestamp } from "@firebase/firestore";
 import { db } from "../../firebase.js";
 import { AuthContext } from "../../App.jsx";
-import { getAllSymbols } from "../../utils/WTDApi.js";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../assets/css/portfolioform.css";
-import { data } from "autoprefixer";
+import { stockInfo } from "../../data/stocks.js";
 
 export const PortfolioForm = ({ setFormData }) => {
   const [queryresults, setQueryResults] = useState(null);
@@ -35,7 +34,7 @@ export const PortfolioForm = ({ setFormData }) => {
     const value = event.target.value;
     setInputValue(value);
 
-    const data = await getAllSymbols(value);
+    const data = filterStocks(value);
     setSuggestedValues(data);
   };
 
@@ -43,6 +42,24 @@ export const PortfolioForm = ({ setFormData }) => {
   const addStockButton = () => {
     setAddstock(!addStock);
   };
+
+const filterStocks = (input)=>{
+if(input.toLowerCase()!==""){
+  let filteredStocks = stockInfo.filter(stock=>{
+    if(stock.symbol.toLowerCase().includes(input)||stock.name.toLowerCase().includes(input)){
+      return true
+    }else{
+      return false
+    }
+  }
+  )
+  return (filteredStocks) 
+}else{
+  return []
+}
+
+}
+
 
   // adds and remove stock from the list
   const handleOptionToggle = (option) => {
@@ -275,7 +292,7 @@ export const PortfolioForm = ({ setFormData }) => {
           ))}
       </ul>
       <div className=' text-md flex justify-between w-80 items-center p-2'>
-        <span id="addstocks" >Add stocks</span>
+        <span id="addstocks" >Add stocks {selectedOptions.length}/5 </span>
         <span onClick={addStockButton} id='plusbutton'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-9 h-9">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

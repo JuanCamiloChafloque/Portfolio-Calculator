@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 import "../assets/css/results.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfitsBoard from "../components/results/ProfitsBoard";
@@ -7,11 +17,11 @@ import ProfitsBoard from "../components/results/ProfitsBoard";
 export default function Results() {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("location.state: ", location.state)
+  console.log("location.state: ", location.state);
   const givendata = location.state.filteredRange;
   const [data, setData] = useState([]);
   const [piechartdata, setPieChartData] = useState([]);
-  console.log("givendata: ", givendata)
+  console.log("givendata: ", givendata);
 
   useEffect(() => {
     const effectdata = [];
@@ -22,17 +32,31 @@ export default function Results() {
           // if the date already exists in the data array, add the new stock's value to the existing date
           // else, add a new date to the data array
           const date = `${splitDate[1]}-${splitDate[2]}-${splitDate[0]}`;
-          const existingIndex = effectdata.findIndex((obj) => obj.date === date);
+          const existingIndex = effectdata.findIndex(
+            (obj) => obj.date === date
+          );
 
           if (existingIndex !== -1) {
-            effectdata[existingIndex][stockname] = parseFloat((Math.round(givendata[stockname].sharesondayone * entry.close * 100) / 100).toFixed(2));
+            effectdata[existingIndex][stockname] = parseFloat(
+              (
+                Math.round(
+                  givendata[stockname].sharesondayone * entry.close * 100
+                ) / 100
+              ).toFixed(2)
+            );
             return;
           }
           return {
             // convert from YYYY-MM-DD to MM-DD-YYYY
             date: `${splitDate[1]}-${splitDate[2]}-${splitDate[0]}`,
             // round to 2 decimal places and include extra 0s if needed to represent cents
-            [stockname]: parseFloat((Math.round(givendata[stockname].sharesondayone * entry.close * 100) / 100).toFixed(2)),
+            [stockname]: parseFloat(
+              (
+                Math.round(
+                  givendata[stockname].sharesondayone * entry.close * 100
+                ) / 100
+              ).toFixed(2)
+            ),
           };
         });
         // filter stockdata since it may contain undefined values
@@ -40,7 +64,7 @@ export default function Results() {
         effectdata.push(...stockData.filter((val) => val !== undefined));
       }
     }
-    console.log("data: ", effectdata)
+    console.log("data: ", effectdata);
     setPieChartData(getPieChartData());
     setData(effectdata);
     // console.log("pie chart data: ", getPieChartData());
@@ -63,18 +87,40 @@ export default function Results() {
     return chartdata;
   };
 
+  const getTotalProfit = () => {
+    let totalProfit = 0.0;
+    Object.entries(givendata).forEach(([key, val]) => {
+      console.log(val.sharesondayone);
+      totalProfit +=
+        Math.round(val.sharesondayone * val.data.slice(-1)[0].close * 100) /
+        100;
+    });
+
+    return totalProfit;
+  };
+
   // math stuff for pie chart
   const RADIAN = Math.PI / 180;
 
   return (
     <div id="resultsouterdiv">
       <div className="toprightbuttons">
-        <button id="pastsearchesbutton" className="buttons" onClick={() => navigate("/")}>
+        <button
+          id="pastsearchesbutton"
+          className="buttons"
+          onClick={() => navigate("/")}
+        >
           Back to Home
         </button>
       </div>
-      <h1>Results</h1>
-      <div id="profitandchartdiv" className="flex flex-row justify-between items-center w-full my-4">
+      <h1>Portfolio Results</h1>
+      <div>
+        <h1 className="text-2xl">Total Profit: ${getTotalProfit()}</h1>
+      </div>
+      <div
+        id="profitandchartdiv"
+        className="flex flex-row justify-between items-center w-full my-4"
+      >
         <div id="profitsdiv">
           <ProfitsBoard data={givendata} />
         </div>
@@ -89,20 +135,38 @@ export default function Results() {
                 outerRadius={45}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-                  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                label={({
+                  cx,
+                  cy,
+                  midAngle,
+                  innerRadius,
+                  outerRadius,
+                  percent,
+                  index,
+                }) => {
+                  const radius =
+                    innerRadius + (outerRadius - innerRadius) * 0.5;
                   const x = cx + radius * Math.cos(-midAngle * RADIAN);
                   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-                
+
                   return (
-                    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="middle">
-                        {`${(percent * 100).toFixed(0)}%`}
+                    <text
+                      x={x}
+                      y={y}
+                      fill="white"
+                      textAnchor={x > cx ? "start" : "end"}
+                      dominantBaseline="middle"
+                    >
+                      {`${(percent * 100).toFixed(0)}%`}
                     </text>
                   );
-                }}   
+                }}
               >
                 {piechartdata.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={`hsl(${Math.random() * 360}, 50%, 60%)`} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={`hsl(${Math.random() * 360}, 50%, 60%)`}
+                  />
                 ))}
               </Pie>
               <Legend verticalAlign="bottom" height={36} />
@@ -123,24 +187,24 @@ export default function Results() {
             bottom: 5,
           }}
         >
-          <XAxis dataKey="date" tick={{ fill: 'white' }} />
-          <YAxis tick={{ fill: 'white' }} />
+          <XAxis dataKey="date" tick={{ fill: "white" }} />
+          <YAxis tick={{ fill: "white" }} />
           <Tooltip formatter={(value) => `$${value}`} />
           <Legend height={36} />
-            {/* Render Line components for each stock dynamically */}
-            {Object.keys(data[0])
-              .filter((key) => key !== 'date')
-              .map((entry, index) => (
-                <Line
-                  key={index}
-                  type="monotone"
-                  dataKey={entry}
-                  stroke={`hsl(${Math.random() * 360}, 50%, 60%)`}
-                  activeDot={{ r: 8 }}
-                />
+          {/* Render Line components for each stock dynamically */}
+          {Object.keys(data[0])
+            .filter((key) => key !== "date")
+            .map((entry, index) => (
+              <Line
+                key={index}
+                type="monotone"
+                dataKey={entry}
+                stroke={`hsl(${Math.random() * 360}, 50%, 60%)`}
+                activeDot={{ r: 8 }}
+              />
             ))}
         </LineChart>
       )}
     </div>
-  )
+  );
 }

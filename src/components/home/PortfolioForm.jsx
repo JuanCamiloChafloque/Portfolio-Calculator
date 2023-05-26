@@ -43,23 +43,23 @@ export const PortfolioForm = ({ setFormData }) => {
     setAddstock(!addStock);
   };
 
-const filterStocks = (input)=>{
-if(input.toLowerCase()!==""){
-  let filteredStocks = stockInfo.filter(stock=>{
-    if(stock.symbol.toLowerCase().includes(input)||stock.name.toLowerCase().includes(input)){
-      return true
-    }else{
-      return false
+  const filterStocks = (input) => {
+    if (input.toLowerCase() !== "") {
+      let filteredStocks = stockInfo.filter((stock) => {
+        if (
+          stock.symbol.toLowerCase().includes(input) ||
+          stock.name.toLowerCase().includes(input)
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      return filteredStocks;
+    } else {
+      return [];
     }
-  }
-  )
-  return (filteredStocks) 
-}else{
-  return []
-}
-
-}
-
+  };
 
   // adds and remove stock from the list
   const handleOptionToggle = (option) => {
@@ -217,9 +217,9 @@ if(input.toLowerCase()!==""){
           </svg>
         </span>
       </div> */}
-    {/* <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
+      {/* <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
       <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} onChange={(event) => setDataobj({...dataobj, balance: parseInt(event.target.value)})} /> */}
-    
+
       <ul>
         {selectedOptions.map((stock) => (
           <li
@@ -273,7 +273,7 @@ if(input.toLowerCase()!==""){
           suggestedValues.map((value, index) => (
             <li
               className=" bg-blue-50 text-m m-2 text-left p-1 rounded-md "
-              key={index} 
+              key={index}
             >
               <label className="flex justify-between font-medium items-center gradientText">
                 {value.symbol}
@@ -291,11 +291,22 @@ if(input.toLowerCase()!==""){
             </li>
           ))}
       </ul>
-      <div className=' text-md flex justify-between w-80 items-center p-2'>
-        <span id="addstocks" >Add stocks {selectedOptions.length}/5 </span>
-        <span onClick={addStockButton} id='plusbutton'>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-9 h-9">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      <div className=" text-md flex justify-between w-80 items-center p-2">
+        <span id="addstocks">Add stocks {selectedOptions.length}/5 </span>
+        <span onClick={addStockButton} id="plusbutton">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-9 h-9"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
           </svg>
         </span>
       </div>
@@ -317,7 +328,6 @@ if(input.toLowerCase()!==""){
         onChange={(date) => setDataobj({ ...dataobj, finish: date })}
         customInput={<CustomFinishInput />}
         popperPlacement="bottom"
-        minDate={getFinishDate()}
         maxDate={getFinishDate()}
         peekNextMonth
         showMonthDropdown

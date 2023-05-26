@@ -137,6 +137,14 @@ export const PortfolioForm = ({ setFormData }) => {
       return false;
     }
 
+    if (dataobj.allocation.length > 5) {
+      toast.error("Please enter at less than 5 stocks for the portfolio.", {
+        position: toast.POSITION.TOP_CENTER,
+        theme: "colored",
+      });
+      return false;
+    }
+
     const sumValues = dataobj.allocation.reduce(
       (a, b) => parseInt(a) + parseInt(b.weight),
       0

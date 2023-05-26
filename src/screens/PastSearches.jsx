@@ -9,6 +9,8 @@ import {
   getDocs,
   serverTimestamp,
 } from "@firebase/firestore";
+import { toast } from "react-toastify";
+import { getHistoricalDataBySymbol } from "../utils/WTDApi.js";
 import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 import tinycolor from "tinycolor2";
 import styles from "../assets/css/pastsearches.module.css";
@@ -54,6 +56,71 @@ export default function PastSearches() {
     console.log("foundpast is: ", foundpast);
   }, [foundpast]);
 
+  const displayPastDataResults = (startDate, endDate, balance, allocation) => {
+    processData(startDate, endDate, balance, allocation).then((res) => {
+      if (res) {
+        console.log(res);
+        navigate("/results", { state: { filteredRange: res } });
+      } else {
+        console.log("SDSAD");
+      }
+    });
+  };
+
+  const processData = async (startDate, endDate, balance, allocation) => {
+    let dataResults = {};
+    await Promise.all(
+      allocation.map(async (alloc, index) => {
+        const allocBalance = balance * (alloc.weight / 100);
+        const data = await getHistoricalDataBySymbol(alloc.symbol);
+        // if data holds a key titled "Note", then there was an error, and alert to user "API is exhausted, please try again in a minute"
+        if (data["Note"]) {
+          toast.error("API is exhausted, please try again in a minute.", {
+            position: toast.POSITION.TOP_CENTER,
+            theme: "colored",
+          });
+          return;
+        } else {
+          const filteredData = Object.entries(data)
+            .filter(([key, _]) => {
+              return key >= startDate && key <= endDate;
+            })
+            .reverse();
+
+          // each entry in filteredData is a new date
+          const result = filteredData.map((newdate) => {
+            return {
+              date: newdate[0],
+              close: parseFloat(newdate[1]["4. close"]),
+              adjusted_close: parseFloat(newdate[1]["5. adjusted close"]),
+            };
+          });
+
+          console.log("RES", result);
+
+          if (result) {
+            if (!dataResults[alloc.symbol]) {
+              dataResults[alloc.symbol] = {
+                initialBalance: parseFloat(allocBalance.toFixed(2)),
+                initialDate: startDate,
+                weight: alloc.weight,
+                data: result,
+                sharesondayone:
+                  (balance * (alloc.weight / 100)) / result[0].close,
+              };
+            }
+          } else {
+            toast.error("Something went wrong! Try again.", {
+              position: toast.POSITION.TOP_CENTER,
+              theme: "colored",
+            });
+          }
+        }
+      })
+    );
+    return dataResults;
+  };
+
   // math stuff for pie chart
   const RADIAN = Math.PI / 180;
 
@@ -98,15 +165,21 @@ export default function PastSearches() {
               <div
                 key={index}
                 onClick={() =>
-                  navigate(
+                  /*                   navigate(
                     `/searches/?start=${val.start}&end=${val.finish}&balance=${
                       val.balance
                     }&allocation=${encodeURIComponent(
                       JSON.stringify(val.allocation)
                     )}&symbol=${val.symbol}`
+                  ) */
+                  displayPastDataResults(
+                    val.start,
+                    val.finish,
+                    val.balance,
+                    val.allocation
                   )
                 }
-                className="flex flex-row gap-x-4 justify-center"
+                className="flex flex-row gap-x-4 justify-center cursor-pointer"
               >
                 <div className="flex flex-col justify-center">
                   <p>

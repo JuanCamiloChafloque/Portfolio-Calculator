@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, Label } from 'recharts';
 import "../assets/css/results.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfitsBoard from "../components/results/ProfitsBoard";
@@ -73,12 +73,10 @@ export default function Results() {
           Back to Home
         </button>
       </div>
-      <h1>Results</h1>
-      <div id="profitandchartdiv" className="flex flex-row justify-between items-center w-full my-4">
-        <div id="profitsdiv">
-          <ProfitsBoard data={givendata} />
-        </div>
-        <div id="chartdiv">
+      <h1 className="text-white">Results</h1>
+      <div id="profitandchartdiv" className="flex flex-row justify-between items-center w-full my-4 gap-x-4">
+        <ProfitsBoard data={givendata} />
+        <div id="chartdiv" className="bg-blue-50 shadow-md rounded-lg py-4 ">
           {piechartdata.length > 0 && (
             <PieChart width={225} height={225}>
               <Pie
@@ -95,7 +93,7 @@ export default function Results() {
                   const y = cy + radius * Math.sin(-midAngle * RADIAN);
                 
                   return (
-                    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="middle">
+                    <text x={x} y={y} fill="black" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="middle">
                         {`${(percent * 100).toFixed(0)}%`}
                     </text>
                   );
@@ -113,20 +111,29 @@ export default function Results() {
       </div>
       {Object.keys(data).length > 0 && (
         <LineChart
-          width={641}
-          height={384}
+          width={700}
+          height={400}
           data={data}
           margin={{
-            top: 5,
-            right: 30,
-            left: 20,
+            top: 20,
+            right: 50,
+            left: 40,
             bottom: 5,
           }}
+          className="bg-blue-50 shadow-md rounded-lg"
         >
-          <XAxis dataKey="date" tick={{ fill: 'white' }} />
-          <YAxis tick={{ fill: 'white' }} />
+          <XAxis dataKey="date" tick={{ fill: 'black' }} />
+          <YAxis tick={{ fill: 'black' }}>
+          <Label
+            value="Prices"
+            position="insideLeft"
+            angle={0}
+            style={{ textAnchor: 'middle', fill: 'black' }}
+            offset={-10}
+          />
+          </YAxis>
           <Tooltip formatter={(value) => `$${value}`} />
-          <Legend height={36} />
+          <Legend height={24} />
             {/* Render Line components for each stock dynamically */}
             {Object.keys(data[0])
               .filter((key) => key !== 'date')

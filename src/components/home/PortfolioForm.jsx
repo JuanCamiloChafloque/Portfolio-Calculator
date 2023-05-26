@@ -267,30 +267,31 @@ if(input.toLowerCase()!==""){
           onChange={handleTicker}
         />
       )}
-      <ul className="max-h-96 w-80	overflow-y-scroll drop-shadow-md rounded-m p-2">
-        {/* add a check box */}
-        {inputValue.length !== 0 &&
-          suggestedValues.map((value, index) => (
-            <li
-              className=" bg-blue-50 text-m m-2 text-left p-1 rounded-md "
-              key={index} 
-            >
-              <label className="flex justify-between font-medium items-center gradientText">
-                {value.symbol}
-                <input
-                  type="checkbox"
-                  className=" w-7 h-7"
-                  checked={selectedOptions.includes(value.symbol)}
-                  onChange={() => {
-                    handleOptionToggle(value.symbol);
-                    addStockButton();
-                    setInputValue("");
-                  }}
-                />
-              </label>
-            </li>
-          ))}
-      </ul>
+      {inputValue.length !== 0 &&
+        <ul className="max-h-96 w-80	overflow-y-scroll drop-shadow-md rounded-m p-2">
+          {/* add a check box */}
+            {suggestedValues.map((value, index) => (
+              <li
+                className=" bg-blue-50 text-m m-2 text-left p-1 rounded-md "
+                key={index} 
+              >
+                <label className="flex justify-between font-medium items-center gradientText">
+                  {value.symbol}
+                  <input
+                    type="checkbox"
+                    className=" w-7 h-7"
+                    checked={selectedOptions.includes(value.symbol)}
+                    onChange={() => {
+                      handleOptionToggle(value.symbol);
+                      addStockButton();
+                      setInputValue("");
+                    }}
+                  />
+                </label>
+              </li>
+            ))}
+        </ul>
+      }
       <div className=' text-md flex justify-between w-80 items-center p-2'>
         <span id="addstocks" >Add stocks {selectedOptions.length}/5 </span>
         <span onClick={addStockButton} id='plusbutton'>

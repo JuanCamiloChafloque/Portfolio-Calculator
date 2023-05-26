@@ -2,10 +2,10 @@ import React from "react";
 
 const ProfitsBoard = ({ data }) => {
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center bg-blue-50 shadow-md rounded-lg py-4 gap-y-4">
       {Object.entries(data).map(([key, value]) => {
         return (
-          <div key={key} className="mb-6">
+          <div key={key}>
             <p className="text-4xl mb-2">Allocation: {key}</p>
             <p className="text-base">
               Initial balance: ${value.initialBalance}

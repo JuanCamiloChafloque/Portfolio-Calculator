@@ -3,12 +3,12 @@ import Typed from "typed.js";
 import { AuthContext } from "../App";
 import { RingLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { PortfolioForm } from "../components/home/PortfolioForm";
 import { db } from "../firebase";
 import { addDoc, collection, doc, serverTimestamp } from "@firebase/firestore";
 import "../assets/css/home.css";
 import { getHistoricalDataBySymbol } from "../utils/WTDApi";
-import ProfitsBoard from "../components/results/ProfitsBoard";
 
 export default function Home() {
   const [formcomplete, setFormComplete] = useState(null);
@@ -67,44 +67,56 @@ export default function Home() {
             const data = await getHistoricalDataBySymbol(alloc.symbol);
             // if data holds a key titled "Note", then there was an error, and alert to user "API is exhausted, please try again in a minute"
             if (data["Note"]) {
-              alert("API is exhausted, please try again in a minute.");
+              toast.error("API is exhausted, please try again in a minute.", {
+                position: toast.POSITION.TOP_CENTER,
+                theme: "colored",
+              });
               return;
             }
-            console.log("data in processData gotten")
+            console.log("data in processData gotten");
 
-            const filteredData = Object.entries(data).filter(([key, _]) => {
-              const keyasdate = new Date(key);
-              return keyasdate >= startDate && keyasdate <= endDate;
-            }).reverse();
+            const filteredData = Object.entries(data)
+              .filter(([key, _]) => {
+                const keyasdate = new Date(key);
+                return keyasdate >= startDate && keyasdate <= endDate;
+              })
+              .reverse();
 
             // each entry in filteredData is a new date
             const result = filteredData.map((newdate) => {
               return {
                 date: newdate[0],
                 close: parseFloat(newdate[1]["4. close"]),
-                adjusted_close: parseFloat(newdate[1]["5. adjusted close"])
+                adjusted_close: parseFloat(newdate[1]["5. adjusted close"]),
               };
             });
 
             if (result) {
               if (!dataResults[alloc.symbol]) {
-                console.log("shares for day one: ", formdata.balance * (alloc.weight / 100) / result[0].close)
+                console.log(
+                  "shares for day one: ",
+                  (formdata.balance * (alloc.weight / 100)) / result[0].close
+                );
                 dataResults[alloc.symbol] = {
                   initialBalance: parseFloat(allocBalance.toFixed(2)),
                   initialDate: startDate,
                   weight: alloc.weight,
                   data: result,
-                  sharesondayone: formdata.balance * (alloc.weight / 100) / result[0].close,
+                  sharesondayone:
+                    (formdata.balance * (alloc.weight / 100)) / result[0].close,
                 };
               }
             } else {
-              alert("Something went wrong! Try again.");
+              toast.error("Something went wrong! Try again.", {
+                position: toast.POSITION.TOP_CENTER,
+                theme: "colored",
+              });
             }
           })
         );
         return dataResults;
       };
-      
+
       processData().then((result) => {
         if (result) {
           setFilteredRange(result);
@@ -123,10 +135,18 @@ export default function Home() {
   return (
     <div id="homeouterdiv">
       <div className="toprightbuttons">
-        <button id="pastsearchesbutton" className="buttons" onClick={() => navigate("/pastsearches")}>
+        <button
+          id="pastsearchesbutton"
+          className="buttons"
+          onClick={() => navigate("/pastsearches")}
+        >
           Past Searches
         </button>
-        <button id="resultsbutton" className="buttons" onClick={() => navigate("/results")}>
+        <button
+          id="resultsbutton"
+          className="buttons"
+          onClick={() => navigate("/results")}
+        >
           Results
         </button>
         <button id="signoutbutton" className="buttons" onClick={() => logout()}>

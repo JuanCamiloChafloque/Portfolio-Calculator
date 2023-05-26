@@ -32,9 +32,9 @@
   padding-top: 0.75rem !important;
   padding-bottom: 0.375rem;
   padding-inline: 1rem;
-  border-radius: 25px !important;
+  border-radius: 10px !important;
   transition: all 0.4s ease-in-out;
-  color: black;
+  color: white;
   background: linear-gradient(to right, #1CB5E0 0%, #000851 100%) !important;
   border: none;
   cursor: pointer;

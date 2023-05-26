@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     height: calc(100vh - 4rem);
-    background: radial-gradient(50% 50% at 50% 50%, rgba(0, 136, 188, 0.65) 0%, rgba(0, 136, 188, 0) 100%);
+    /* background: radial-gradient(50% 50% at 50% 50%, rgba(0, 136, 188, 0.65) 0%, rgba(0, 136, 188, 0) 100%); */
 }
 .authtitle {
     /* background: linear-gradient(to right, #38f0f0 50%, #3017cd);
@@ -24,13 +24,13 @@
 }
 .authdiv input {
     margin-top: 1rem;
-    padding-inline: 1rem;
-    border-radius: 25px;
+    padding-inline: 2rem;
+    border-radius: 10px;
     color: white;
     font-size: 18px;
-    background: linear-gradient(to right, #38f0f0, #3017cd);
+   
     padding-top: 0.5rem;
 }
 .authdiv input::placeholder {
-    color: black;
+    color: white;
 }

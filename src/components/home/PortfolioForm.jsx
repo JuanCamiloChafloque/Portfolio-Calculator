@@ -66,13 +66,16 @@ export const PortfolioForm = ({ setFormData }) => {
       setFormData({...dataobj, start: new Date(dataobj.start).toISOString().substring(0, 10), finish: new Date(dataobj.finish).toISOString().substring(0, 10)})
       console.log("success")
     } else {
+      console.log("sum values is: ", sumValues)
       alert("Allocation is missing")
     }
   }
 
   return (
     <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
-      <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} onChange={(event) => setDataobj({...dataobj, balance: parseInt(event.target.value)})} />
+      <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} 
+        onChange={(event) => setDataobj({...dataobj, balance: parseFloat(event.target.value)})}
+      />
       <div className=' text-md flex justify-between w-80 items-center p-2'>
         <span id="addstocks">Add stocks</span>
         <span onClick={addStockButton} id='plusbutton'>

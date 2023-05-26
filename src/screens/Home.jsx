@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import Typed from "typed.js";
 import { AuthContext } from "../App";
 import { RingLoader } from "react-spinners";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { PortfolioForm } from "../components/home/PortfolioForm";
 import { db } from "../firebase";
 import { addDoc, collection, doc, serverTimestamp } from "@firebase/firestore";
 import "../assets/css/home.css";
 import { getHistoricalDataBySymbol } from "../utils/WTDApi";
+import ProfitsBoard from "../components/results/ProfitsBoard";
 
 export default function Home() {
   const [formcomplete, setFormComplete] = useState(null);
@@ -91,6 +92,7 @@ export default function Home() {
                 dataResults[alloc.symbol] = {
                   initialBalance: parseFloat(allocBalance.toFixed(2)),
                   initialDate: startDate,
+                  weight: alloc.weight,
                   data: result,
                   sharesondayone: formdata.balance * (alloc.weight / 100) / result[0].close,
                 };
@@ -139,9 +141,7 @@ export default function Home() {
           id="questouterdiv"
           className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2"
         >
-          {loading &&
-            <RingLoader color="#FFA500" loading={true} size={150} />
-          }
+          {loading && <RingLoader color="#FFA500" loading={true} size={150} />}
         </div>
       ) : (
         <PortfolioForm setFormData={setFormData} />

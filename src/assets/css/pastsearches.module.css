@@ -1,0 +1,62 @@
+.searchesspan::before {
+    content: '';
+    position: absolute;
+    bottom: 22%;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    background-color: #503bd0;
+    z-index: -1;
+}
+.pastsearchesdiv {
+    margin-top: 15vh;
+    row-gap: 1.5rem;
+}
+.pastsearchesdiv > div {
+    background-color: #f4efe8;
+    border-radius: 8px;
+    padding: 48px 32px 32px;
+    color: #111111;
+    position: relative;
+    text-align: start;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    font-weight: 600;}
+.pastsearchesdiv > div::before {
+    content: '';
+    position: absolute;
+    top: .2rem;
+    left: -1rem;
+    width: 100%;
+    height: 102%;
+    border-radius: 8px;
+    border: 4px solid #111111;
+    background-color: transparent;
+    pointer-events: none;
+}
+/* recharts wrapper */
+.pastsearchesdiv > div > :nth-child(2) {
+    display: flex !important;
+    flex-direction: column !important;
+}
+/* .recharts-legend-wrapper { */
+.pastsearchesdiv > div > :nth-child(2) > :nth-child(2) {
+    display: flex !important;
+    margin-top: -4vh !important;
+    height: auto !important;
+    position: relative !important;
+}
+.piechart {
+    width: 100% !important;
+    height: 100% !important;
+}
+.recharts-wrapper .recharts-legend-item {
+    display: flex !important;
+    margin-right: 0px !important;
+}
+.recharts-wrapper .recharts-default-legend {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    column-gap: 0.25rem;
+}

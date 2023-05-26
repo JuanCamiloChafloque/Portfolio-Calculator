@@ -8,6 +8,7 @@ import Home from '../../screens/Home.jsx';
 import SignupScreen from '../../screens/SignUpScreen.jsx';
 import PastSearches from '../../screens/PastSearches.jsx';
 import LoginScreen from '../../screens/LoginScreen.jsx';
+import Results from '../../screens/Results.jsx';
 
 export default function Routing() {
   const {user, setUser} = useContext(AuthContext);
@@ -27,7 +28,8 @@ export default function Routing() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route exact path='/pastsearches' element={<PastSearches />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route exact path='/results' element={<Results />} />
+          <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
       :
         <Routes>

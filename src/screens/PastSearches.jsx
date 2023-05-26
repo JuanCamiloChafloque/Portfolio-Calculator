@@ -3,9 +3,10 @@ import { AuthContext } from '../App.jsx';
 import { useNavigate } from 'react-router';
 import { db } from '../firebase.js';
 import { addDoc, doc, collection, getDocs, serverTimestamp } from '@firebase/firestore';
-import '../assets/css/pastsearches.css';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import tinycolor from 'tinycolor2';
+import styles from '../assets/css/pastsearches.module.css';
+import '../assets/css/pastsearches.css';
 
 export default function PastSearches() {
     const { user, logout } = useContext(AuthContext);
@@ -53,8 +54,8 @@ export default function PastSearches() {
                 <button id="pastsearchesbutton" className="buttons" onClick={() => navigate("/")}>Back to Home</button>
                 <button id="signoutbutton" className="buttons" onClick={() => logout()}>Sign Out</button>
             </div>
-            <h1>Past <span id="searchesspan" className='relative'>Searches</span></h1>
-            <div id='pastsearchesdiv' className='flex flex-col items-center justify-center relative'>
+            <h1>Past <span id="searchesspan" className={styles['searchesspan'] + ' relative'}>Searches</span></h1>
+            <div id='pastsearchesdiv' className={styles["pastsearchesdiv"] + ' flex flex-col items-center justify-center relative'}>
                 {foundpast.length > 0 && foundpast.map((val, index) => {
                     console.log("value at index is: ", val)
                     const piedata = val.allocation.map((outeralloc) => ({ name: outeralloc.symbol, value: outeralloc.weight }));
@@ -69,7 +70,7 @@ export default function PastSearches() {
                                 </p>
                                 <p>Request was made at {new Date(val.timestamp.seconds * 1000).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })} on {new Date(val.timestamp.seconds * 1000).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                             </div>
-                            <PieChart id='piechart' width={150} height={150}>
+                            <PieChart width={150} height={150} className={styles['recharts-wrapper'] + styles['piechart']}>
                                 <Pie
                                     data={piedata}
                                     cx="50%"
@@ -91,10 +92,10 @@ export default function PastSearches() {
                                     dataKey="value"
                                 >
                                     {piedata.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={tinycolor('#' + Math.floor(Math.random() * 16777215).toString(16)).darken(20).toString()} />
+                                        <Cell key={`cell-${index}`} fill={`hsl(${Math.random() * 360}, 50%, 60%)`} />
                                     ))}
                                 </Pie>
-                                <Legend verticalAlign="bottom" height={27} />
+                                <Legend verticalAlign="bottom" height={27} className={styles['recharts-legend-wrapper']} />
                                 <Tooltip />
                             </PieChart>
                         </div>

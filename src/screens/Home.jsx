@@ -4,7 +4,6 @@ import { AuthContext } from "../App";
 import { RingLoader } from "react-spinners";
 import { useNavigate } from "react-router";
 import { PortfolioForm } from "../components/home/PortfolioForm";
-import Results from "../components/home/Results.jsx";
 import { db } from "../firebase";
 import { addDoc, collection, doc, serverTimestamp } from "@firebase/firestore";
 import "../assets/css/home.css";
@@ -70,6 +69,7 @@ export default function Home() {
               alert("API is exhausted, please try again in a minute.");
               return;
             }
+            console.log("data in processData gotten")
 
             const filteredData = Object.entries(data).filter(([key, _]) => {
               const keyasdate = new Date(key);
@@ -117,18 +117,18 @@ export default function Home() {
   useEffect(() => {
     if (filteredRange) {
       setLoading(false);
+      navigate("/results", { state: { filteredRange } });
     }
   }, [filteredRange]);
 
   return (
     <div id="homeouterdiv">
-      <div id="homebuttondiv" className="toprightbuttons">
-        <button
-          id="pastsearchesbutton"
-          className="buttons"
-          onClick={() => navigate("/pastsearches")}
-        >
+      <div className="toprightbuttons">
+        <button id="pastsearchesbutton" className="buttons" onClick={() => navigate("/pastsearches")}>
           Past Searches
+        </button>
+        <button id="resultsbutton" className="buttons" onClick={() => navigate("/results")}>
+          Results
         </button>
         <button id="signoutbutton" className="buttons" onClick={() => logout()}>
           Sign Out
@@ -142,11 +142,9 @@ export default function Home() {
           id="questouterdiv"
           className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2"
         >
-          {loading ? (
+          {loading &&
             <RingLoader color="#FFA500" loading={true} size={150} />
-          ) : (
-            <Results formData={filteredRange} />
-          )}
+          }
         </div>
       ) : (
         <PortfolioForm setFormData={setFormData} />

@@ -61,8 +61,6 @@ export default function PastSearches() {
       if (res) {
         console.log(res);
         navigate("/results", { state: { filteredRange: res } });
-      } else {
-        console.log("SDSAD");
       }
     });
   };

@@ -152,6 +152,16 @@ export default function PastSearches() {
           " flex flex-col items-center justify-center relative"
         }
       >
+        <h1 className="text-2xl">
+          Click on any of your past queries to look at the results again
+        </h1>
+        {foundpast.length === 0 && (
+          <div>
+            <h1 className="text-base">
+              There aren't any previous query for your account
+            </h1>
+          </div>
+        )}
         {foundpast.length > 0 &&
           foundpast.map((val, index) => {
             console.log("value at index is: ", val);

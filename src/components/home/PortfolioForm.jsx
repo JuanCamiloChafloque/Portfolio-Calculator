@@ -43,23 +43,23 @@ export const PortfolioForm = ({ setFormData }) => {
     setAddstock(!addStock);
   };
 
-const filterStocks = (input)=>{
-if(input.toLowerCase()!==""){
-  let filteredStocks = stockInfo.filter(stock=>{
-    if(stock.symbol.toLowerCase().includes(input)||stock.name.toLowerCase().includes(input)){
-      return true
-    }else{
-      return false
+  const filterStocks = (input) => {
+    if (input.toLowerCase() !== "") {
+      let filteredStocks = stockInfo.filter((stock) => {
+        if (
+          stock.symbol.toLowerCase().includes(input) ||
+          stock.name.toLowerCase().includes(input)
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      return filteredStocks;
+    } else {
+      return [];
     }
-  }
-  )
-  return (filteredStocks) 
-}else{
-  return []
-}
-
-}
-
+  };
 
   // adds and remove stock from the list
   const handleOptionToggle = (option) => {
@@ -217,9 +217,9 @@ if(input.toLowerCase()!==""){
           </svg>
         </span>
       </div> */}
-    {/* <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
+      {/* <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
       <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} onChange={(event) => setDataobj({...dataobj, balance: parseInt(event.target.value)})} /> */}
-    
+
       <ul>
         {selectedOptions.map((stock) => (
           <li
@@ -318,7 +318,6 @@ if(input.toLowerCase()!==""){
         onChange={(date) => setDataobj({ ...dataobj, finish: date })}
         customInput={<CustomFinishInput />}
         popperPlacement="bottom"
-        minDate={getFinishDate()}
         maxDate={getFinishDate()}
         peekNextMonth
         showMonthDropdown

@@ -78,24 +78,21 @@ export default function Home() {
 
             // each entry in filteredData is a new date
             const result = filteredData.map((newdate) => {
-              // have shares that they'd have on this new date
-              const closeondate = parseFloat(newdate[1]["4. close"]);
-              const numShares = allocBalance / closeondate;
               return {
                 date: newdate[0],
-                shares: numShares,
-                close: closeondate,
-                adjusted_close: parseFloat(newdate[1]["5. adjusted close"]),
-                value_investment: numShares * closeondate,
+                close: parseFloat(newdate[1]["4. close"]),
+                adjusted_close: parseFloat(newdate[1]["5. adjusted close"])
               };
             });
 
             if (result) {
               if (!dataResults[alloc.symbol]) {
+                console.log("shares for day one: ", formdata.balance * (alloc.weight / 100) / result[0].close)
                 dataResults[alloc.symbol] = {
                   initialBalance: parseFloat(allocBalance.toFixed(2)),
                   initialDate: startDate,
                   data: result,
+                  sharesondayone: formdata.balance * (alloc.weight / 100) / result[0].close,
                 };
               }
             } else {

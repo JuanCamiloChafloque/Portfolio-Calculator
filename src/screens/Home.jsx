@@ -72,49 +72,46 @@ export default function Home() {
                 theme: "colored",
               });
               return;
-            }
-            console.log("data in processData gotten");
-
-            const filteredData = Object.entries(data)
-              .filter(([key, _]) => {
-                const keyasdate = new Date(key);
-                return keyasdate >= startDate && keyasdate <= endDate;
-              })
-              .reverse();
-
-            // each entry in filteredData is a new date
-            const result = filteredData.map((newdate) => {
-              return {
-                date: newdate[0],
-                close: parseFloat(newdate[1]["4. close"]),
-                adjusted_close: parseFloat(newdate[1]["5. adjusted close"]),
-              };
-            });
-
-            if (result) {
-              if (!dataResults[alloc.symbol]) {
-                console.log(
-                  "shares for day one: ",
-                  (formdata.balance * (alloc.weight / 100)) / result[0].close
-                );
-                dataResults[alloc.symbol] = {
-                  initialBalance: parseFloat(allocBalance.toFixed(2)),
-                  initialDate: startDate,
-                  weight: alloc.weight,
-                  data: result,
-                  sharesondayone:
-                    (formdata.balance * (alloc.weight / 100)) / result[0].close,
-                };
-              }
             } else {
-              toast.error("Something went wrong! Try again.", {
-                position: toast.POSITION.TOP_CENTER,
-                theme: "colored",
+              const filteredData = Object.entries(data)
+                .filter(([key, _]) => {
+                  const keyasdate = new Date(key);
+                  return keyasdate >= startDate && keyasdate <= endDate;
+                })
+                .reverse();
+
+              // each entry in filteredData is a new date
+              const result = filteredData.map((newdate) => {
+                return {
+                  date: newdate[0],
+                  close: parseFloat(newdate[1]["4. close"]),
+                  adjusted_close: parseFloat(newdate[1]["5. adjusted close"]),
+                };
               });
+
+              if (result) {
+                if (!dataResults[alloc.symbol]) {
+                  dataResults[alloc.symbol] = {
+                    initialBalance: parseFloat(allocBalance.toFixed(2)),
+                    initialDate: startDate,
+                    weight: alloc.weight,
+                    data: result,
+                    sharesondayone:
+                      (formdata.balance * (alloc.weight / 100)) /
+                      result[0].close,
+                  };
+                }
+                console.log("DATA:", dataResults);
+                return dataResults;
+              } else {
+                toast.error("Something went wrong! Try again.", {
+                  position: toast.POSITION.TOP_CENTER,
+                  theme: "colored",
+                });
+              }
             }
           })
         );
-        return dataResults;
       };
 
       processData().then((result) => {

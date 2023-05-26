@@ -77,9 +77,14 @@ export const PortfolioForm = ({ setFormData }) => {
     </button>
   ));
 
-  const getFinishDate = () => {
+  const getStartDate = () => {
     const today = new Date();
     return today.setDate(today.getDate() - 1);
+  };
+
+  const getFinishDate = () => {
+    const today = new Date();
+    return today.setDate(today.getDate());
   };
 
   const submitfunc = (e) => {
@@ -264,7 +269,7 @@ export const PortfolioForm = ({ setFormData }) => {
         onChange={(date) => setDataobj({ ...dataobj, start: date })}
         customInput={<CustomStartInput />}
         popperPlacement="bottom"
-        maxDate={getFinishDate()}
+        maxDate={getStartDate()}
         peekNextMonth
         showMonthDropdown
         showYearDropdown

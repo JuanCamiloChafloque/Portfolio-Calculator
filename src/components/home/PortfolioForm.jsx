@@ -181,7 +181,7 @@ export const PortfolioForm = ({ setFormData }) => {
           })
         }
       />
-      <div className=" text-md flex justify-between w-80 items-center p-2">
+      {/* <div className=" text-md flex justify-between w-80 items-center p-2">
         <span id="addstocks">Add stocks</span>
         <span onClick={addStockButton} id="plusbutton">
           <svg
@@ -199,7 +199,10 @@ export const PortfolioForm = ({ setFormData }) => {
             />
           </svg>
         </span>
-      </div>
+      </div> */}
+    {/* <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
+      <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} onChange={(event) => setDataobj({...dataobj, balance: parseInt(event.target.value)})} /> */}
+    
       <ul>
         {selectedOptions.map((stock) => (
           <li
@@ -242,20 +245,20 @@ export const PortfolioForm = ({ setFormData }) => {
       {!addStock && (
         <input
           type="text"
-          className="mb-3"
+          className="m-3"
           value={inputValue}
           onChange={handleTicker}
         />
       )}
-      <ul className="max-h-96 w-80	overflow-y-scroll  bg-purple-400 rounded-sm ">
+      <ul className="max-h-96 w-80	overflow-y-scroll drop-shadow-md rounded-m p-2">
         {/* add a check box */}
         {inputValue.length !== 0 &&
           suggestedValues.map((value, index) => (
             <li
-              className="text-purple-600 bg-slate-200 text-m m-1 text-left p-1 "
-              key={index}
+              className=" bg-blue-50 text-m m-2 text-left p-1 rounded-md "
+              key={index} 
             >
-              <label className="flex justify-between font-medium items-center">
+              <label className="flex justify-between font-medium items-center gradientText">
                 {value.symbol}
                 <input
                   type="checkbox"
@@ -271,6 +274,14 @@ export const PortfolioForm = ({ setFormData }) => {
             </li>
           ))}
       </ul>
+      <div className=' text-md flex justify-between w-80 items-center p-2'>
+        <span id="addstocks" >Add stocks</span>
+        <span onClick={addStockButton} id='plusbutton'>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-9 h-9">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </span>
+      </div>
       <ReactDatePicker
         className="w-10"
         selected={dataobj.start}

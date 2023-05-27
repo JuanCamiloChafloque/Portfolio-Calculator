@@ -1,14 +1,14 @@
 import axios from "axios";
 
-// pranav's api key
+// pranav's api key = "MYMC251UAARWJLXA"
 // const API_KEY = "SV2RAVRTE4ZMY20U";
 // nathanuel's api key
 
 // NEED 2 SEPARATE API KEYS FOR SYMBOLS AND HISTORICAL DATA
-const API_KEY = "58ITJOGTSMQ4HAXP";
+const API_KEY = "MYMC251UAARWJLXA";
 
 // symbol api key
-const SYMBOL_API_KEY = "4GK0VKSADSHDAMA5";
+const SYMBOL_API_KEY = "YYQSDHJWCB81GIU6";
 const BASE_URL = "https://www.alphavantage.co/query?apikey=";
 
 let isFetchingData = false;

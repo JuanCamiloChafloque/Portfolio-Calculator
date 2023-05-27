@@ -11,6 +11,7 @@ export default function Results() {
   const givendata = location.state.filteredRange;
   const [data, setData] = useState([]);
   const [piechartdata, setPieChartData] = useState([]);
+  const [totalprofit, setTotalProfit] = useState(0.00);
   console.log("givendata: ", givendata);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function Results() {
       }
     }
     console.log("data: ", effectdata);
+    setTotalProfit(getTotalProfit());
     setPieChartData(getPieChartData());
     setData(effectdata);
     // console.log("pie chart data: ", getPieChartData());
@@ -81,12 +83,10 @@ export default function Results() {
     let totalProfit = 0.0;
     Object.entries(givendata).forEach(([key, val]) => {
       console.log(val.sharesondayone);
-      totalProfit +=
-        Math.round(val.sharesondayone * val.data.slice(-1)[0].close * 100) /
-        100;
+      totalProfit += (Math.round(val.sharesondayone * val.data.slice(-1)[0].close * 100) / 100);
     });
-
-    return totalProfit;
+    
+    return totalProfit.toFixed(2);
   };
 
   // math stuff for pie chart
@@ -104,12 +104,10 @@ export default function Results() {
         </button>
       </div>
       <h1 className="text-white">Results</h1>
-      <div>
-        <h1 className="text-2xl">Total Profit: ${getTotalProfit()}</h1>
-      </div>
+      <h1 className="text-3xl my-4 bg-blue-50 shadow-md rounded-lg px-6 pt-5 py-3">Total Profit: <span style={{color: parseFloat(totalprofit) >= 0 ? 'green' : 'red'}}>${totalprofit}</span></h1>
       <div id="profitandchartdiv" className="flex flex-row justify-between items-center w-full my-4 gap-x-4">
         <ProfitsBoard data={givendata} />
-        <div id="chartdiv" className="bg-blue-50 shadow-md rounded-lg py-4 ">
+        <div id="chartdiv" className="bg-blue-50 shadow-md rounded-lg py-4">
           {piechartdata.length > 0 && (
             <PieChart width={225} height={225}>
               <Pie

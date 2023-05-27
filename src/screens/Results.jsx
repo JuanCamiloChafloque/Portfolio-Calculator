@@ -7,12 +7,12 @@ import ProfitsBoard from "../components/results/ProfitsBoard";
 export default function Results() {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("location.state: ", location.state);
+  // console.log("location.state: ", location.state);
   const givendata = location.state.filteredRange;
   const [data, setData] = useState([]);
   const [piechartdata, setPieChartData] = useState([]);
   const [totalprofit, setTotalProfit] = useState(0.00);
-  console.log("givendata: ", givendata);
+  // console.log("givendata: ", givendata);
 
   useEffect(() => {
     const effectdata = [];
@@ -26,7 +26,6 @@ export default function Results() {
           const existingIndex = effectdata.findIndex(
             (obj) => obj.date === date
           );
-
           if (existingIndex !== -1) {
             effectdata[existingIndex][stockname] = parseFloat(
               (
@@ -35,8 +34,10 @@ export default function Results() {
                 ) / 100
               ).toFixed(2)
             );
+            // console.log("data now at index: ", existingIndex, " is: ", effectdata[existingIndex])
             return;
           }
+          // console.log("stockname is:", stockname, "and existingIndex is: ", existingIndex);
           return {
             // convert from YYYY-MM-DD to MM-DD-YYYY
             date: `${splitDate[1]}-${splitDate[2]}-${splitDate[0]}`,
@@ -50,21 +51,34 @@ export default function Results() {
             ),
           };
         });
-        // filter stockdata since it may contain undefined values
-        // data.push(...stockData);
+        
         effectdata.push(...stockData.filter((val) => val !== undefined));
       }
     }
-    console.log("data: ", effectdata);
+    // console.log("data: ", effectdata);
+    
+    // iterate through the effectdata, and if there is no value for any of the stocks at that date, just add the key as the stockname, and the value as 0
+    for (let i = 0; i < effectdata.length; i++) {
+      const element = effectdata[i];
+      for (const stockname in givendata) {
+        if (Object.hasOwnProperty.call(givendata, stockname)) {
+          if (!element[stockname]) {
+            element[stockname] = 0;
+          }
+        }
+      }
+    }
+    // console.log("effectdata after push: ", effectdata)
+    
     setTotalProfit(getTotalProfit());
     setPieChartData(getPieChartData());
     setData(effectdata);
     // console.log("pie chart data: ", getPieChartData());
   }, []);
 
-  useEffect(() => {
-    console.log("data just set to: ", data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("data just set to: ", data);
+  // }, [data]);
 
   const getPieChartData = () => {
     const chartdata = [];
@@ -82,7 +96,7 @@ export default function Results() {
   const getTotalProfit = () => {
     let totalProfit = 0.0;
     Object.entries(givendata).forEach(([key, val]) => {
-      console.log(val.sharesondayone);
+      // console.log(val.sharesondayone);
       totalProfit += (Math.round(val.sharesondayone * val.data.slice(-1)[0].close * 100) / 100);
     });
     
@@ -104,7 +118,16 @@ export default function Results() {
         </button>
       </div>
       <h1 className="text-white">Results</h1>
-      <h1 className="text-3xl my-4 bg-blue-50 shadow-md rounded-lg px-6 pt-5 py-3">Total Profit: <span style={{color: parseFloat(totalprofit) >= 0 ? 'green' : 'red'}}>${totalprofit}</span></h1>
+      {totalprofit !== 0.00 && 
+        <h1 className="text-3xl my-4 bg-blue-50 shadow-md rounded-lg px-6 pt-5 py-3">Total Profit: &nbsp;
+          <span style={{color: parseFloat(totalprofit) >= 0 ? 'green' : 'red'}}>
+          ${parseFloat(totalprofit).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+          </span>
+        </h1>
+      }
       <div id="profitandchartdiv" className="flex flex-row justify-between items-center w-full my-4 gap-x-4">
         <ProfitsBoard data={givendata} />
         <div id="chartdiv" className="bg-blue-50 shadow-md rounded-lg py-4">

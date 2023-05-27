@@ -242,7 +242,7 @@ export const PortfolioForm = ({ setFormData }) => {
               htmlFor={stock}
               max="100"
               min="0"
-              placeholder="0"
+              placeholder="Allocation"
               onChange={(event) => {
                 const newAllocation = dataobj.allocation.filter(
                   (item) => item.symbol !== stock

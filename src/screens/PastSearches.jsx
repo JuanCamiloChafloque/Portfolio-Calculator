@@ -2,21 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../App.jsx";
 import { useNavigate } from "react-router";
 import { db } from "../firebase.js";
-import {
-  addDoc,
-  doc,
-  collection,
-  getDocs,
-  serverTimestamp,
-} from "@firebase/firestore";
+import { collection, getDocs } from "@firebase/firestore";
 import { toast } from "react-toastify";
 import { getHistoricalDataBySymbol } from "../utils/WTDApi.js";
 import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
-import tinycolor from "tinycolor2";
+import { useMediaQuery } from 'react-responsive';
+
 import styles from "../assets/css/pastsearches.module.css";
-import "../assets/css/pastsearches.css";
 
 export default function PastSearches() {
+  const isTablet = useMediaQuery({ query: `(min-width: 605px)` });
+  const isLaptop = useMediaQuery({ query: `(min-width: 728px)` });
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [foundpast, setFoundPast] = useState([]);
@@ -50,6 +46,18 @@ export default function PastSearches() {
     };
 
     fetchData();
+
+    const handleMouseMove = (event) => {
+      const x = (event.clientX / window.innerWidth) * 100;
+      const y = (event.clientY / window.innerHeight) * 100;
+      setCirclePosition({ x, y });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   useEffect(() => {
@@ -124,15 +132,15 @@ export default function PastSearches() {
 
   return (
     <div>
-      <div id="homebuttondiv" className="toprightbuttons">
+      <div id="homebuttondiv" className={isLaptop ? "toprightbuttons" : "flex flex-row justify-between items-center"}>
         <button
           id="pastsearchesbutton"
-          className="buttons"
+          className={`buttons ${isLaptop ? "" : "mt-0"}`}
           onClick={() => navigate("/")}
         >
           Back to Home
         </button>
-        <button id="signoutbutton" className="buttons" onClick={() => logout()}>
+        <button id="signoutbutton" className={`buttons ${isLaptop ? "" : "mt-0"}`} onClick={() => logout()}>
           Sign Out
         </button>
       </div>
@@ -170,24 +178,8 @@ export default function PastSearches() {
               value: outeralloc.weight,
             }));
             return (
-              <div
-                key={index}
-                onClick={() =>
-                  /*                   navigate(
-                    `/searches/?start=${val.start}&end=${val.finish}&balance=${
-                      val.balance
-                    }&allocation=${encodeURIComponent(
-                      JSON.stringify(val.allocation)
-                    )}&symbol=${val.symbol}`
-                  ) */
-                  displayPastDataResults(
-                    val.start,
-                    val.finish,
-                    val.balance,
-                    val.allocation
-                  )
-                }
-                className="flex flex-row gap-x-4 justify-center cursor-pointer"
+              <div key={index} className={isTablet ? "flex flex-row gap-x-4 justify-center cursor-pointer" : "flex flex-col gap-y-4 justify-center cursor-pointer items-center"}
+                onClick={() => displayPastDataResults(val.start, val.finish, val.balance, val.allocation) }
               >
                 <div className="flex flex-col justify-center">
                   <p>

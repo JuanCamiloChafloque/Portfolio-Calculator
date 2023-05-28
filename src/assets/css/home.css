@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   color: #f4efe8 !important;
-  font-size: 3rem;
+  font-size: 120%;
 }
 
 @keyframes blinkingOrange{

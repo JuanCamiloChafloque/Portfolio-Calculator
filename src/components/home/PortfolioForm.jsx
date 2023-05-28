@@ -185,10 +185,10 @@ export const PortfolioForm = ({ setFormData }) => {
       onSubmit={(e) => submitfunc(e)}
     >
       <input
-        className="my-3 text-center"
+        id="balance"
+        className="my-3 text-center w-2/5"
         type="number"
         name=""
-        id=""
         placeholder="Enter your starting balance"
         value={dataobj.balance}
         onChange={(event) =>

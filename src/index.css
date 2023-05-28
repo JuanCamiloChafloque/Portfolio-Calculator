@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @import url('https://fonts.googleapis.com/css2?family=Gayathri:wght@100;400;700&family=Inter:wght@300;900&family=Montserrat:wght@600&display=swap'); */
-
 :root {
   font-family: 'Gayathri', sans-serif;
   line-height: 1.5;

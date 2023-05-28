@@ -27,6 +27,9 @@ label{
 
     color: white !important;
 }
+#balance::placeholder {
+    font-size: 45%;
+}
 #addstocks {
     font-weight: 700;
     color: white !important;

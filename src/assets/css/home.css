@@ -3,14 +3,13 @@
   color: white;
   text-align: center;
 }
-#outertyped {
+#typedvote {
   margin-top: 5vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
   color: #f4efe8 !important;
-  font-size: 120%;
+  font-size: 150%;
+}
+.typed-cursor {
+  font-size: 150%;
 }
 
 @keyframes blinkingOrange{
@@ -55,4 +54,10 @@
 }
 .toprightbuttons > *:hover {
   color: black !important;
+}
+@media (max-width: 654px) {
+  #typedvote {
+    font-size: 120%;
+    height: 5vh;
+  }
 }

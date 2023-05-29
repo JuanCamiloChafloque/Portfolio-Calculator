@@ -25,7 +25,7 @@
   -webkit-text-fill-color: transparent;
 }
 @media (max-width: 727px) {
-  #homebuttondiv {
+  #buttondiv {
     margin-bottom: 5vh;
   }
   #signoutbutton {
@@ -75,3 +75,6 @@
   .read-the-docs {
     color: #888;
   }
+span.recharts-legend-item-text {
+  font-size: 82.5%;
+}

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, Label } from 'recharts';
-import "../assets/css/results.css";
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts';
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfitsBoard from "../components/results/ProfitsBoard";
+import { useMediaQuery } from 'react-responsive';
+import "../assets/css/results.css";
 
 export default function Results() {
   const navigate = useNavigate();
   const location = useLocation();
-  // console.log("location.state: ", location.state);
   const givendata = location.state.filteredRange;
   const [data, setData] = useState([]);
   const [piechartdata, setPieChartData] = useState([]);
   const [totalprofit, setTotalProfit] = useState(0.00);
-  // console.log("givendata: ", givendata);
+  const isMobile = useMediaQuery({ query: `(max-width: 654px)` });
 
   useEffect(() => {
     const effectdata = [];
@@ -20,6 +20,7 @@ export default function Results() {
       if (Object.hasOwnProperty.call(givendata, stockname)) {
         const stockData = givendata[stockname].data.map((entry) => {
           const splitDate = entry.date.split("-");
+
           // if the date already exists in the data array, add the new stock's value to the existing date
           // else, add a new date to the data array
           const date = `${splitDate[1]}-${splitDate[2]}-${splitDate[0]}`;
@@ -34,13 +35,12 @@ export default function Results() {
                 ) / 100
               ).toFixed(2)
             );
-            // console.log("data now at index: ", existingIndex, " is: ", effectdata[existingIndex])
             return;
           }
-          // console.log("stockname is:", stockname, "and existingIndex is: ", existingIndex);
           return {
             // convert from YYYY-MM-DD to MM-DD-YYYY
             date: `${splitDate[1]}-${splitDate[2]}-${splitDate[0]}`,
+
             // round to 2 decimal places and include extra 0s if needed to represent cents
             [stockname]: parseFloat(
               (
@@ -55,9 +55,9 @@ export default function Results() {
         effectdata.push(...stockData.filter((val) => val !== undefined));
       }
     }
-    // console.log("data: ", effectdata);
     
-    // iterate through the effectdata, and if there is no value for any of the stocks at that date, just add the key as the stockname, and the value as 0
+    // iterate through the effectdata, and if there is no value for any of the stocks at that date,
+    // just add the key as the stockname, and the value as 0
     for (let i = 0; i < effectdata.length; i++) {
       const element = effectdata[i];
       for (const stockname in givendata) {
@@ -68,17 +68,11 @@ export default function Results() {
         }
       }
     }
-    // console.log("effectdata after push: ", effectdata)
     
     setTotalProfit(getTotalProfit());
     setPieChartData(getPieChartData());
     setData(effectdata);
-    // console.log("pie chart data: ", getPieChartData());
   }, []);
-
-  // useEffect(() => {
-  //   console.log("data just set to: ", data);
-  // }, [data]);
 
   const getPieChartData = () => {
     const chartdata = [];
@@ -96,7 +90,6 @@ export default function Results() {
   const getTotalProfit = () => {
     let totalProfit = 0.0;
     Object.entries(givendata).forEach(([key, val]) => {
-      // console.log(val.sharesondayone);
       totalProfit += (Math.round(val.sharesondayone * val.data.slice(-1)[0].close * 100) / 100);
     });
     
@@ -107,7 +100,7 @@ export default function Results() {
   const RADIAN = Math.PI / 180;
 
   return (
-    <div id="resultsouterdiv">
+    <div id="resultsouterdiv" className="mt-4 w-full">
       <div className="toprightbuttons">
         <button
           id="pastsearchesbutton"
@@ -176,43 +169,85 @@ export default function Results() {
         </div>
       </div>
       {Object.keys(data).length > 0 && (
-        <LineChart
-          width={700}
-          height={400}
-          data={data}
-          margin={{
-            top: 20,
-            right: 50,
-            left: 40,
-            bottom: 5,
-          }}
-          className="bg-blue-50 shadow-md rounded-lg"
-        >
-          <XAxis dataKey="date" tick={{ fill: 'black' }} />
-          <YAxis tick={{ fill: 'black' }}>
-          <Label
-            value="Prices"
-            position="insideLeft"
-            angle={0}
-            style={{ textAnchor: 'middle', fill: 'black' }}
-            offset={-10}
-          />
-          </YAxis>
-          <Tooltip formatter={(value) => `$${value}`} />
-          <Legend height={24} />
-            {/* Render Line components for each stock dynamically */}
-            {Object.keys(data[0])
-              .filter((key) => key !== 'date')
-              .map((entry, index) => (
-                <Line
-                  key={index}
-                  type="monotone"
-                  dataKey={entry}
-                  stroke={`hsl(${Math.random() * 360}, 50%, 60%)`}
-                  activeDot={{ r: 8 }}
-                />
-            ))}
-        </LineChart>
+        isMobile ? (
+          <ResponsiveContainer width="140%" height="15%">
+            <LineChart
+              width={700}
+              height={400}
+              data={data}
+              margin={{
+                top: 20,
+                right: 50,
+                left: 40,
+                bottom: 5,
+              }}
+              className="bg-blue-50 shadow-md rounded-lg"
+            >
+              <XAxis dataKey="date" tick={{ fill: 'black' }} />
+              <YAxis tick={{ fill: 'black' }}>
+              <Label
+                value="Prices"
+                position="insideLeft"
+                angle={0}
+                style={{ textAnchor: 'middle', fill: 'black' }}
+                offset={-10}
+              />
+              </YAxis>
+              <Tooltip formatter={(value) => `$${value}`} />
+              <Legend height={24} />
+                {/* Render Line components for each stock dynamically */}
+                {Object.keys(data[0])
+                  .filter((key) => key !== 'date')
+                  .map((entry, index) => (
+                    <Line
+                      key={index}
+                      type="monotone"
+                      dataKey={entry}
+                      stroke={`hsl(${Math.random() * 360}, 50%, 60%)`}
+                      activeDot={{ r: 8 }}
+                    />
+                ))}
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <LineChart
+            width={700}
+            height={400}
+            data={data}
+            margin={{
+              top: 20,
+              right: 50,
+              left: 40,
+              bottom: 5,
+            }}
+            className="bg-blue-50 shadow-md rounded-lg"
+          >
+            <XAxis dataKey="date" tick={{ fill: 'black' }} />
+            <YAxis tick={{ fill: 'black' }}>
+            <Label
+              value="Prices"
+              position="insideLeft"
+              angle={0}
+              style={{ textAnchor: 'middle', fill: 'black' }}
+              offset={-10}
+            />
+            </YAxis>
+            <Tooltip formatter={(value) => `$${value}`} />
+            <Legend height={24} />
+              {/* Render Line components for each stock dynamically */}
+              {Object.keys(data[0])
+                .filter((key) => key !== 'date')
+                .map((entry, index) => (
+                  <Line
+                    key={index}
+                    type="monotone"
+                    dataKey={entry}
+                    stroke={`hsl(${Math.random() * 360}, 50%, 60%)`}
+                    activeDot={{ r: 8 }}
+                  />
+              ))}
+          </LineChart>
+        )
       )}
     </div>
   );

@@ -11,10 +11,6 @@
 label{
     text-shadow: none;
 }
-#portfolioform input {
-    border-radius: 10px;
-    text-align: center;
-}
 .percents {
     width: 40% !important;
     height: 6vh !important;

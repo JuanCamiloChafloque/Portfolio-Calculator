@@ -46,18 +46,6 @@ export default function PastSearches() {
     };
 
     fetchData();
-
-    const handleMouseMove = (event) => {
-      const x = (event.clientX / window.innerWidth) * 100;
-      const y = (event.clientY / window.innerHeight) * 100;
-      setCirclePosition({ x, y });
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
   }, []);
 
   useEffect(() => {
@@ -132,7 +120,7 @@ export default function PastSearches() {
 
   return (
     <div>
-      <div id="homebuttondiv" className={isLaptop ? "toprightbuttons" : "flex flex-row justify-between items-center"}>
+      <div id="buttondiv" className={isLaptop ? "toprightbuttons" : "flex flex-row justify-between items-center"}>
         <button
           id="pastsearchesbutton"
           className={`buttons ${isLaptop ? "" : "mt-0"}`}
@@ -211,7 +199,7 @@ export default function PastSearches() {
                 </div>
                 <PieChart
                   width={150}
-                  height={150}
+                  height={175}
                   className={styles["recharts-wrapper"] + styles["piechart"]}
                 >
                   <Pie

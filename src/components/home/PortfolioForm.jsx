@@ -193,9 +193,10 @@ export const PortfolioForm = ({ setFormData }) => {
         value={dataobj.balance}
         onChange={(event) => setDataobj({ ...dataobj, balance: parseFloat(event.target.value) })}
       />
-      <ul>
+      <ul id="optionsul" className="flex max-w-full">
         {selectedOptions.map((stock) => (
           <li
+            id="optionsli"
             className="flex justify-between font-medium  items-center max-h-96 w-80"
             key={stock}
           >
@@ -211,11 +212,12 @@ export const PortfolioForm = ({ setFormData }) => {
             </label>
             <input
               type="number"
-              className="percents w-10 h-7 text-base"
+              className="percents text-base text-center"
               htmlFor={stock}
               max="100"
               min="0"
-              placeholder="Allocation"
+              id="weight"
+              placeholder="%"
               onChange={(event) => {
                 const newAllocation = dataobj.allocation.filter(
                   (item) => item.symbol !== stock
@@ -235,13 +237,13 @@ export const PortfolioForm = ({ setFormData }) => {
       {!addStock && (
         <input
           type="text"
-          className="m-3"
+          className="m-3 w-4/5 rounded-lg sm:w-2/5"
           value={inputValue}
           onChange={handleTicker}
         />
       )}
       {inputValue.length !== 0 &&
-        <ul className="max-h-96 w-80	overflow-y-scroll drop-shadow-md rounded-m p-2">
+        <ul className="max-h-96 w-80 overflow-y-scroll drop-shadow-md rounded-m p-2">
           {/* add a check box */}
             {suggestedValues.map((value, index) => (
               <li

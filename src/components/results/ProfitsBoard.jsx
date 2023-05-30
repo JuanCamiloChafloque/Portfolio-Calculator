@@ -2,7 +2,7 @@ import React from "react";
 
 const ProfitsBoard = ({ data }) => {
   return (
-    <div className="flex flex-col items-center justify-center bg-blue-50 shadow-md rounded-lg py-4 gap-y-4">
+    <div className="flex flex-col items-center justify-center bg-blue-50 shadow-md rounded-lg p-4 gap-y-4">
       {Object.entries(data).map(([key, value]) => {
         const tempnum = (Math.round(value.sharesondayone * value.data.slice(-1)[0].close * 100) / 100).toFixed(2);
         return (

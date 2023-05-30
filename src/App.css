@@ -18,13 +18,20 @@
     filter: drop-shadow(0 0 2em #61dafbaa);
   }
 
-  .gradientText{
-   font-weight: 800;
+.gradientText{
+  font-weight: 800;
   background: -webkit-linear-gradient(180deg,#00d2ff, #3a47d5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+@media (max-width: 727px) {
+  #buttondiv {
+    margin-bottom: 5vh;
   }
-
+  #signoutbutton {
+    background: linear-gradient(to left, #1CB5E0 0%, #000851 100%) !important;
+  }
+}
 .buttons {
   margin-top: 1rem;
   font-size: 18px;
@@ -68,3 +75,6 @@
   .read-the-docs {
     color: #888;
   }
+span.recharts-legend-item-text {
+  font-size: 82.5%;
+}

@@ -185,44 +185,18 @@ export const PortfolioForm = ({ setFormData }) => {
       onSubmit={(e) => submitfunc(e)}
     >
       <input
-        className="my-3 text-center"
+        id="balance"
+        className="my-3 text-center w-4/5 rounded-lg sm:w-2/5"
         type="number"
         name=""
-        id=""
         placeholder="Enter your starting balance"
         value={dataobj.balance}
-        onChange={(event) =>
-          setDataobj({
-            ...dataobj,
-            balance: parseFloat(event.target.value),
-          })
-        }
+        onChange={(event) => setDataobj({ ...dataobj, balance: parseFloat(event.target.value) })}
       />
-      {/* <div className=" text-md flex justify-between w-80 items-center p-2">
-        <span id="addstocks">Add stocks</span>
-        <span onClick={addStockButton} id="plusbutton">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-9 h-9"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15"
-            />
-          </svg>
-        </span>
-      </div> */}
-      {/* <form id='portfolioform' className='flex items-center relative mx-auto flex-col w-max-2 justify-start rounded-lg p-2' onSubmit={(e) => submitfunc(e)}>
-      <input className='my-3 text-center' type="number" name="" id="" placeholder='Enter your starting balance' value={dataobj.balance} onChange={(event) => setDataobj({...dataobj, balance: parseInt(event.target.value)})} /> */}
-
-      <ul>
+      <ul id="optionsul" className="flex max-w-full">
         {selectedOptions.map((stock) => (
           <li
+            id="optionsli"
             className="flex justify-between font-medium  items-center max-h-96 w-80"
             key={stock}
           >
@@ -238,11 +212,12 @@ export const PortfolioForm = ({ setFormData }) => {
             </label>
             <input
               type="number"
-              className="percents w-10 h-7 text-base"
+              className="percents text-base text-center"
               htmlFor={stock}
               max="100"
               min="0"
-              placeholder="Allocation"
+              id="weight"
+              placeholder="%"
               onChange={(event) => {
                 const newAllocation = dataobj.allocation.filter(
                   (item) => item.symbol !== stock
@@ -262,13 +237,13 @@ export const PortfolioForm = ({ setFormData }) => {
       {!addStock && (
         <input
           type="text"
-          className="m-3"
+          className="m-3 w-4/5 rounded-lg sm:w-2/5"
           value={inputValue}
           onChange={handleTicker}
         />
       )}
       {inputValue.length !== 0 &&
-        <ul className="max-h-96 w-80	overflow-y-scroll drop-shadow-md rounded-m p-2">
+        <ul className="max-h-96 w-80 overflow-y-scroll drop-shadow-md rounded-m p-2">
           {/* add a check box */}
             {suggestedValues.map((value, index) => (
               <li
@@ -292,8 +267,8 @@ export const PortfolioForm = ({ setFormData }) => {
             ))}
         </ul>
       }
-      <div className=' text-md flex justify-between w-80 items-center p-2'>
-        <span id="addstocks" >Add stocks {selectedOptions.length}/5 </span>
+      <div className='text-md flex justify-between items-center w-full p-2 sm:w-80'>
+        <span id="addstocks" className="text-[80%]">Add stocks {selectedOptions.length}/5 </span>
         <span onClick={addStockButton} id='plusbutton'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-9 h-9">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

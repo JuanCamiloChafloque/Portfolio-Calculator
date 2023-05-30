@@ -7,14 +7,17 @@ import { toast } from "react-toastify";
 import { PortfolioForm } from "../components/home/PortfolioForm";
 import { db } from "../firebase";
 import { addDoc, collection, doc, serverTimestamp } from "@firebase/firestore";
-import "../assets/css/home.css";
 import { getHistoricalDataBySymbol } from "../utils/WTDApi";
+import { useMediaQuery } from 'react-responsive';
+import "../assets/css/home.css";
 
 export default function Home() {
   const [formcomplete, setFormComplete] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formdata, setFormData] = useState({});
   const [filteredRange, setFilteredRange] = useState(null);
+  const isLaptop = useMediaQuery({ query: `(min-width: 728px)` });
+  const isMobile = useMediaQuery({ query: `(max-width: 654px)` });
 
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -22,18 +25,20 @@ export default function Home() {
   const typed = useRef(null);
 
   useEffect(() => {
-    const options = {
-      strings: ["NCP's Portfolio Calculator"],
-      typeSpeed: 45,
-      backSpeed: 45,
-      loop: true,
-    };
+    if (!isMobile) {
+      const options = {
+        strings: ["NCP's Portfolio Calculator"],
+        typeSpeed: 45,
+        backSpeed: 45,
+        loop: true,
+      };
 
-    typed.current = new Typed(el.current, options);
+      typed.current = new Typed(el.current, options);
 
-    return () => {
-      typed.current.destroy();
-    };
+      return () => {
+        typed.current.destroy();
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -130,7 +135,7 @@ export default function Home() {
 
   return (
     <div id="homeouterdiv">
-      <div className="toprightbuttons">
+      <div id="buttondiv" className={isLaptop ? "toprightbuttons" : "flex flex-row justify-between items-center"}>
         <button
           id="pastsearchesbutton"
           className="buttons"
@@ -143,9 +148,11 @@ export default function Home() {
           Sign Out
         </button>
       </div>
-      <div id="outertyped">
-        <span id="typedvote" className="blinkingorange" ref={el} />
-      </div>
+      {isMobile ? (
+        <p>NCP's Portfolio Calculator</p>
+      ) : (
+        <span id="typedvote" className="" ref={el} />
+      )}
       {formcomplete ? (
         <div
           id="questouterdiv"

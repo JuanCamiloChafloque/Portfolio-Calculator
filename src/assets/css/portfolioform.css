@@ -11,9 +11,11 @@
 label{
     text-shadow: none;
 }
-#portfolioform input {
-    border-radius: 10px;
-    text-align: center;
+#optionsul {
+    max-width: 90%;
+}
+#optionsli {
+    column-gap: 5%;
 }
 .percents {
     width: 40% !important;
@@ -21,11 +23,16 @@ label{
     font-size: 1.25rem !important;
     border-radius: 4px !important;
 }
+#weight {
+    text-align: center;
+    padding-bottom: 1%;
+}
 #datepick {
     background: #312e81 !important;
-
-
     color: white !important;
+}
+#balance::placeholder {
+    font-size: 45%;
 }
 #addstocks {
     font-weight: 700;

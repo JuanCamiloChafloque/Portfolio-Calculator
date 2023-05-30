@@ -9,7 +9,6 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #111111;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,7 +17,9 @@
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
-
+input {
+  background-color: #333333 !important;
+}
 
 body {
   display: flex;
@@ -26,7 +27,6 @@ body {
   min-height: 100vh;
   background: linear-gradient(360deg, #00d2ff 0%, #3a47d5 100%);
 }
-
 h1 {
   text-align: center;
   font-size: 3.2rem;
@@ -35,17 +35,4 @@ h1 {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }

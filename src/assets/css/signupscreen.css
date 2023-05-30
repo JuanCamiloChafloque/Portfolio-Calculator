@@ -7,10 +7,9 @@
     /* background: radial-gradient(50% 50% at 50% 50%, rgba(0, 136, 188, 0.65) 0%, rgba(0, 136, 188, 0) 100%); */
 }
 .authtitle {
-    /* background: linear-gradient(to right, #38f0f0 50%, #3017cd);
+    background: linear-gradient(to right, white, rgb(0, 255, 174));
     background-clip: text;
-    -webkit-text-fill-color: transparent; */
-
+    -webkit-text-fill-color: transparent;
 }
 .authform {
     display: flex;

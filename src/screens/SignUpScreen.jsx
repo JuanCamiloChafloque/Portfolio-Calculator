@@ -14,7 +14,7 @@ export default function SignupScreen() {
 
   return (
     <div className="authdiv">
-      <p className="authtitle text-[5rem]">NCP's Portfolio Calculator</p>
+      <p className="authtitle lg:text-[5rem] md:text-[4rem] text-[2.5rem]">NCP's Portfolio Calculator</p>
       <p id="createacc" className="text-white">
         Create an Account
       </p>
